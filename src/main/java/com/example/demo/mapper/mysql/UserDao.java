@@ -9,4 +9,7 @@ public interface UserDao {
     UserSecurityDto UserByUsername(@Param("username") String username);
 
     List<UserSecurityDto> findAllUser();
+
+    void addUser(@Param("user") UserSecurityDto user);
+
 }

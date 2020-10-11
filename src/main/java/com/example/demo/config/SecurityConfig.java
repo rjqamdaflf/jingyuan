@@ -2,6 +2,7 @@ package com.example.demo.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -53,7 +54,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/css/**", "/js/**", "/fonts/**", "/index").permitAll()
+        http.authorizeRequests()
+                .antMatchers("/css/**", "/js/**", "/fonts/**", "/index").permitAll()
+                .antMatchers(HttpMethod.POST, "/register").permitAll()//放行注册接口
+                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers(HttpMethod.GET, "/login").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()   //基于 Form 表单登录验证
                 .loginPage("/login")
@@ -64,7 +70,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .failureUrl("/login_error") // 登录失败
                 .and().rememberMe().key(KEY) // 启用 remember me
                 .and().exceptionHandling().accessDeniedPage("/403");  // 处理异常，拒绝访问就重定向到 403 页面
-        http.csrf().disable();
+        http.csrf().disable();     //关闭跨站请求防护
+
     }
 
 

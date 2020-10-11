@@ -180,7 +180,7 @@
             <form class="register-form">
                 <input type="text" placeholder="用户名" id="r_user_name"/>
                 <input type="password" placeholder="密码" id="r_password"/>
-                <input type="text" placeholder="电子邮件" id="r_emial"/>
+                <input type="text" placeholder="电子邮件" id="r_email"/>
                 <button id="create">创建账户</button>
                 <p class="message">已经有了一个账户? <a href="#">立刻登录</a></p>
             </form>
@@ -224,6 +224,19 @@
             $("#errDvi").hide();
         })
 
+
+        function loginFail() {
+            //登录失败
+            $("#password").val("");
+            $("#errDvi").show();
+            setTimeout(function () {
+                $("#login_form").addClass('shake_effect')
+            }, 1);
+            setTimeout(function () {
+                $("#login_form").removeClass('shake_effect')
+            }, 500)
+        }
+
         function check_login() {
             var name = $("#username").val();
             var pass = $("#password").val();
@@ -237,19 +250,12 @@
                         window.location.href = "/hello";
                     } else {
                         console.log("登录失败")
-                        $("#password").val("");
-                        $("#errDvi").show();
-                        setTimeout(function () {
-                            $("#login_form").addClass('shake_effect')
-                        }, 1);
+                        loginFail();
                     }
                 },
                 error: function () {
                     alert("登录失败");
-                    $("#errDvi").show();
-                    setTimeout(function () {
-                        $("#login_form").addClass('shake_effect')
-                    }, 1);
+                    loginFail();
                 }
             })
         }
@@ -257,17 +263,25 @@
         function check_register() {
             var name = $("#r_user_name").val();
             var pass = $("#r_password").val();
-            var email = $("r_email").val();
-            if (name != "" && pass == "" && email != "") {
-                alert("注册成功！");
-                $("#user_name").val("");
-                $("#password").val("");
-            } else {
-                $("#login_form").removeClass('shake_effect');
-                setTimeout(function () {
-                    $("#login_form").addClass('shake_effect')
-                }, 1);
-            }
+            var email = $("#r_email").val();
+            $.ajax({
+                type: 'post',
+                url: '/register',
+                data: {username: name, email: email, password: pass},
+                success: function (data) {
+                    if (data.code === 0) {
+                        console.log("注册成功" + data);
+                        window.location.href = "/login";
+                    } else {
+                        console.log("注册失败")
+                        loginFail();
+                    }
+                },
+                error: function () {
+                    alert("注册失败");
+                    loginFail();
+                }
+            })
         }
 
         $(function () {

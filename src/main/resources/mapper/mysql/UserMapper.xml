@@ -13,9 +13,13 @@
         <result column="name" property="name"/>
         <collection property="dbAuthorities" ofType="com.example.demo.dto.RoleDto">
             <id property="authorityId" column="authority_id"/>
-            <result property="authorityName" column="authority_name" />
+            <result property="authorityName" column="authority_name"/>
         </collection>
     </resultMap>
+    <insert id="addUser">
+        INSERT INTO `user` (`avatar`,`email`,`name`,`password`,`username`)
+        VALUES (#{user.avatar},#{user.email},#{user.name},#{user.password},#{user.username});
+    </insert>
 
     <select id="UserByUsername" resultMap="userSecurityResultMap">
         SELECT
