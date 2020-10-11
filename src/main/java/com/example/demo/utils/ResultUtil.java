@@ -2,6 +2,10 @@ package com.example.demo.utils;
 
 import com.example.demo.dto.Result;
 
+
+/**
+ * 统一数据返回
+ */
 public class ResultUtil {
 
 

@@ -36,6 +36,10 @@ public class UserSecurityDto implements UserDetails {
         return true;
     }
 
+    /**
+     * 账号是否被锁定
+     * @return
+     */
     @Override
     public boolean isAccountNonLocked() {
         return true;

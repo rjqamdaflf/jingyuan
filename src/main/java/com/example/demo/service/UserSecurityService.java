@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
+/**
+ * 鉴权服务
+ */
 @Service
 public class UserSecurityService implements UserDetailsService {
 
