@@ -11,33 +11,52 @@
         <result column="avatar" property="avatar"/>
         <result column="email" property="email"/>
         <result column="name" property="name"/>
-        <collection property="authorities" ofType="java.lang.String" javaType="java.util.List">
-            <result column="authority"/>
+        <collection property="dbAuthorities" ofType="com.example.demo.dto.RoleDto">
+            <id property="authorityId" column="authority_id"/>
+            <result property="authorityName" column="authority_name" />
         </collection>
     </resultMap>
 
     <select id="UserByUsername" resultMap="userSecurityResultMap">
         SELECT
-        ut.`id`,
-        ut.`avatar`,
+        ut.id,
+        ut.avatar,
         ut.email,
-        ut.`name`,
-        ut.`password`,
-        ut.`username`,
-        a.`name` AS authority
+        ut.NAME,
+        ut.PASSWORD,
+        ut.username,
+        a.id AS authority_id,
+        a.`name` AS authority_name
         FROM
         (
         SELECT
         *
         FROM
-        ( SELECT * FROM `user` u WHERE u.`username` = #{username} ) ut
+        ( SELECT * FROM `user` u WHERE u.`username` =#{username} ) ut
+        LEFT JOIN `user_authority` ua ON ut.`id` = ua.`user_id`
+        ) ut
+        LEFT JOIN `authority` a ON ut.`authority_id` = a.`id`
+    </select>
+
+    <select id="findAllUser" resultMap="userSecurityResultMap">
+        SELECT
+        ut.id,
+        ut.avatar,
+        ut.email,
+        ut.`name`,
+        ut.`password`,
+        ut.username,
+        a.id AS authority_id,
+        a.`name` AS authority_name
+        FROM
+        (
+        SELECT
+        *
+        FROM
+        ( SELECT * FROM `user` u ) ut
         LEFT JOIN `user_authority` ua ON ut.`id` = ua.`user_id`
         ) ut
         LEFT JOIN `authority` a ON ut.`authority_id` = a.`id`;
-    </select>
-
-    <select id="findAllUser" resultType="com.example.demo.dto.UserSecurityDto">
-        select * from user
     </select>
 
 

@@ -5,6 +5,7 @@ import com.example.demo.dto.User;
 import com.example.demo.dto.UserSecurityDto;
 import com.example.demo.mapper.ApplicationDao;
 import com.example.demo.mapper.mysql.UserDao;
+import com.example.demo.mapper.testMapper.TestDao;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -19,9 +20,25 @@ public class DemoApplicationTests {
     private UserDao userDao;
 
     @Test
+    public void test3() {
+        List<UserSecurityDto> allUser = userDao.findAllUser();
+        allUser.forEach(System.out::println);
+    }
+
+    @Test
     public void testUserDao() {
         UserSecurityDto user = userDao.UserByUsername("admin");
         System.out.println(user);
+        System.out.println(user.getAuthorities());
+    }
+
+    @Resource
+    TestDao testDao;
+
+    @Test
+    public void testDao() {
+        com.example.demo.mapper.testMapper.User userById = testDao.getUserById(1);
+        System.out.println(userById);
     }
 
 

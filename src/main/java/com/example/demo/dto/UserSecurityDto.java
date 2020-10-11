@@ -11,32 +11,23 @@ import java.util.List;
 
 @Data
 public class UserSecurityDto implements UserDetails {
-    private String id;
+    private Long id;
     private String avatar;
     private String email;
     private String name;
     private String password;
     private String username;
-    private List<String> authorities;
+    private List<RoleDto> dbAuthorities;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (authorities != null) {
+        if (dbAuthorities != null) {
             List<GrantedAuthority> returnAuthorities = new ArrayList<>();
-            authorities.forEach(e -> returnAuthorities.add(new SimpleGrantedAuthority(e)));
+            dbAuthorities.forEach(e -> returnAuthorities.add(new SimpleGrantedAuthority(e.getAuthorityName())));
             return returnAuthorities;
         }
         return null;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
     }
 
     @Override
