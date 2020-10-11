@@ -6,8 +6,8 @@ spring:
       datasource:
         sqlserver:
           username: test
-          password: quickdev789
-          url: jdbc:sqlserver://111.198.53.100:30031;DatabaseName=JCRLZS
+          password: test
+          url: jdbc:sqlserver://localhsot:30031;DatabaseName=JCRLZS
           driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
         mysql:
           username: root
