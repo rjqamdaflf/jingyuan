@@ -29,7 +29,8 @@ public class HelloController {
 
     @GetMapping("/hello")
     @ResponseBody
-    @PreAuthorize("isAuthenticated()")
+//    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('ADMIN')")
     public String hello() {
         return "hello";
     }
