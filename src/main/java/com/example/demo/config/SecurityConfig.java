@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 import javax.annotation.Resource;
 
@@ -43,6 +45,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        return manager;
 //    }
 
+    @Resource
+    SavedRequestAwareAuthenticationSuccessHandler savedRequestAwareAuthenticationSuccessHandler;
+
+    @Resource
+    SimpleUrlAuthenticationFailureHandler simpleUrlAuthenticationFailureHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -51,8 +58,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()   //基于 Form 表单登录验证
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/hello")//登录认证成功后默认转跳的路径
-                .failureUrl("/login_error") // 登录失败
+                .successHandler(savedRequestAwareAuthenticationSuccessHandler)
+                .failureHandler(simpleUrlAuthenticationFailureHandler)
+//                .defaultSuccessUrl("/hello")//登录认证成功后默认转跳的路径
+//                .failureUrl("/login_error") // 登录失败
                 .and().rememberMe().key(KEY) // 启用 remember me
                 .and().exceptionHandling().accessDeniedPage("/403");  // 处理异常，拒绝访问就重定向到 403 页面
         http.csrf().disable();
