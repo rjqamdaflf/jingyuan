@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.mysql.UserDao">
+
+    <resultMap id="userSecurityResultMap" type="com.example.demo.dto.UserSecurityDto">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="avatar" property="avatar"/>
+        <result column="email" property="email"/>
+        <result column="name" property="name"/>
+        <collection property="authorities" ofType="java.lang.String" javaType="java.util.List">
+            <result column="authority"/>
+        </collection>
+    </resultMap>
+
+    <select id="UserByUsername" resultMap="userSecurityResultMap">
+        SELECT
+        ut.`id`,
+        ut.`avatar`,
+        ut.email,
+        ut.`name`,
+        ut.`password`,
+        ut.`username`,
+        a.`name` AS authority
+        FROM
+        (
+        SELECT
+        *
+        FROM
+        ( SELECT * FROM `user` u WHERE u.`username` = #{username} ) ut
+        LEFT JOIN `user_authority` ua ON ut.`id` = ua.`user_id`
+        ) ut
+        LEFT JOIN `authority` a ON ut.`authority_id` = a.`id`;
+    </select>
+
+    <select id="findAllUser" resultType="com.example.demo.dto.UserSecurityDto">
+        select * from user
+    </select>
+
+
+</mapper>
