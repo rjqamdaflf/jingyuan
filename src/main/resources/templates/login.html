@@ -237,6 +237,16 @@
             }, 500)
         }
 
+        function registerFail() {
+            //注册失败
+            setTimeout(function () {
+                $("#login_form").addClass('shake_effect')
+            }, 1);
+            setTimeout(function () {
+                $("#login_form").removeClass('shake_effect')
+            }, 500)
+        }
+
         function check_login() {
             var name = $("#username").val();
             var pass = $("#password").val();
@@ -260,6 +270,7 @@
             })
         }
 
+
         function check_register() {
             var name = $("#r_user_name").val();
             var pass = $("#r_password").val();
@@ -274,12 +285,12 @@
                         window.location.href = "/login";
                     } else {
                         console.log("注册失败")
-                        loginFail();
+                        registerFail();
                     }
                 },
                 error: function () {
                     alert("注册失败");
-                    loginFail();
+                    registerFail();
                 }
             })
         }
