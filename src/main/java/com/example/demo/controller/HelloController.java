@@ -23,12 +23,12 @@ public class HelloController {
 
     @GetMapping("/")
     public String getIndex() {
-        return "login";
+        return "index";
     }
 
     @GetMapping("/index")
     public String getIndex2() {
-        return "login";
+        return "index";
     }
 
 

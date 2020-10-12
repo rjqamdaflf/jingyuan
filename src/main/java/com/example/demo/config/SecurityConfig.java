@@ -61,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //放行静态文件
                 .antMatchers("/common/**", "/css/**", "/js/**", "/fonts/**").permitAll()
                 //放行主页
-                .antMatchers("/index", "/").permitAll()
+//                .antMatchers("/index", "/").permitAll()
                 //放行图标
                 .antMatchers("/favicon.ico").permitAll()
                 .antMatchers(HttpMethod.POST, "/register").permitAll()//放行注册接口
@@ -85,8 +85,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe()
                 .tokenValiditySeconds(604800)//七天免登陆
                 .tokenRepository(persistentTokenRepository)
-                .userDetailsService(userDetailsService)
-                .and();
+                .userDetailsService(userDetailsService);
     }
 
     @Resource

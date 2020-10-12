@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>登录</title>
+    <title>登录页面</title>
     <script th:replace="common/head::static"></script>
     <style type="text/css">
         .login-page {
@@ -204,10 +204,11 @@
                     var layer = layui.layer;
                     if (data.code === 0) {
                         layer.msg(data.msg, {icon: 1, time: 1000}, function () {
-                            window.location.href = ctx + "/hello";
+                            window.location.href = ctx + "/index";
                         });
                     } else {
-                        layer.msg(data.msg, {icon: 2, time: 2000}, function () {});
+                        layer.msg(data.msg, {icon: 2, time: 2000}, function () {
+                        });
                     }
                 });
             })
