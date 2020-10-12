@@ -184,15 +184,9 @@
             <form class="login-form">
                 <input type="text" maxlength="50" name="username" placeholder="用户名" id="username"/>
                 <input type="password" maxlength="30" name="password" placeholder="密码" id="password"/>
-                <!--                <div class="form-group">-->
-                <!--                    <div class="main-checkbox">-->
-                <!--                        <input type="checkbox" id="checkbox" name="remember-me"/>-->
-                <!--                        <label for="checkbox"></label>-->
-                <!--                    </div>-->
-                <!--                    <span class="text">记住我</span>-->
-                <!--                </div>-->
-                <div id="errDvi" class="col-md-5 col-lg-12" hidden>
-                    <p class="blog-label-error">账号或者密码错误</p>
+                <div class="layui-form-item">
+                    <!-- 直接写死，需要开启选择请自行调整前端代码 -->
+                    <input id="remember-me" type="checkbox" name="remember-me" value="true" style="display: none">
                 </div>
                 <button id="login">登　录</button>
                 <p class="message">还没有账户? <a href="#">立刻创建</a></p>
@@ -200,70 +194,22 @@
         </div>
     </div>
     <script type="text/javascript" th:inline="javascript">
-        var errLogin = [[${errMsg}]];
-
-        // if (errLogin !== null) {
-        //     $("#login_form").removeClass('shake_effect');
-        //     setTimeout(function () {
-        //         $("#login_form").addClass('shake_effect')
-        //     }, 1);
-        //     $("#username").focus(function () {
-        //         $("#errDvi").hide();
-        //     })
-        //     $("#password").focus(function () {
-        //         $("#errDvi").hide();
-        //     })
-        // }
-        $("#username").focus(function () {
-            $("#errDvi").hide();
-        })
-        $("#password").focus(function () {
-            $("#errDvi").hide();
-        })
-
-
-        function loginFail() {
-            //登录失败
-            $("#password").val("");
-            $("#errDvi").show();
-            setTimeout(function () {
-                $("#login_form").addClass('shake_effect')
-            }, 1);
-            setTimeout(function () {
-                $("#login_form").removeClass('shake_effect')
-            }, 500)
-        }
-
-        function registerFail() {
-            //注册失败
-            setTimeout(function () {
-                $("#login_form").addClass('shake_effect')
-            }, 1);
-            setTimeout(function () {
-                $("#login_form").removeClass('shake_effect')
-            }, 500)
-        }
-
         function check_login() {
-            var name = $("#username").val();
-            var pass = $("#password").val();
-            $.ajax({
-                type: 'post',
-                url: '/login',
-                data: {username: name, password: pass},
-                success: function (data) {
+            $.post(ctx + "/login", {
+                "username": $("#username").val(),
+                "password": $("#password").val(),
+                "remember-me": $("#remember-me").val(),
+            }, function (data) {
+                layui.use('layer', function () {
+                    var layer = layui.layer;
                     if (data.code === 0) {
-                        console.log("登录成功" + data);
-                        window.location.href = "/hello";
+                        layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                            window.location.href = ctx + "/hello";
+                        });
                     } else {
-                        console.log("登录失败")
-                        loginFail();
+                        layer.msg(data.msg, {icon: 2, time: 2000}, function () {});
                     }
-                },
-                error: function () {
-                    alert("登录失败");
-                    loginFail();
-                }
+                });
             })
         }
 

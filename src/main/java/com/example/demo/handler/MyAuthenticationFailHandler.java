@@ -29,7 +29,7 @@ public class MyAuthenticationFailHandler extends SimpleUrlAuthenticationFailureH
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
         logger.info("登录失败");
-        Result result = ResultUtil.error("登录失败");
+        Result result = ResultUtil.error("登录失败，账号或者密码错误！");
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(JSONUtil.toJsonStr(result));
     }

@@ -15,8 +15,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true) // 启用方法安全设置
@@ -58,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //放行静态文件
                 .antMatchers("/common/**", "/css/**", "/js/**", "/fonts/**").permitAll()
                 //放行主页
-                .antMatchers("/index","/").permitAll()
+                .antMatchers("/index", "/").permitAll()
                 //放行图标
                 .antMatchers("/favicon.ico").permitAll()
                 .antMatchers(HttpMethod.POST, "/register").permitAll()//放行注册接口
@@ -76,8 +79,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().rememberMe().key(KEY) // 启用 remember me
                 .and().exceptionHandling().accessDeniedPage("/403");  // 处理异常，拒绝访问就重定向到 403 页面
         http.csrf().disable();     //关闭跨站请求防护
+
+        http
+                //开启记住我
+                .rememberMe()
+                .tokenValiditySeconds(604800)//七天免登陆
+                .tokenRepository(persistentTokenRepository)
+                .userDetailsService(userDetailsService)
+                .and();
     }
 
+    @Resource
+    DataSource dataSource;
+
+    @Resource
+    PersistentTokenRepository persistentTokenRepository;
+
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl persistentTokenRepository = new JdbcTokenRepositoryImpl();
+        persistentTokenRepository.setDataSource(dataSource);
+        return persistentTokenRepository;
+    }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
