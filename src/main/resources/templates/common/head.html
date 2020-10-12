@@ -1,0 +1,29 @@
+<!--此页面用于放置页面的公共片段（fragment）-->
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">>
+<head th:fragment="static">
+    <!-- thymeleaf内联js-->
+    <head>
+        <script th:inline="javascript">
+            //项目根路径
+            // ctx = /*[[@{/}]]*/'';
+            ctx = [[${#request.getContextPath()}]];//应用路径
+            console.log('应用路径' + ctx);
+        </script>
+    </head>
+    <!-- 引入公用库 -->
+    <head>
+        <!-- Jquery -->
+        <script th:src="@{/common/js/jquery-3.1.1.min.js}"></script>
+
+        <!-- bootstrap -->
+        <link th:href="@{/common/css/bootstrap.css}" rel="stylesheet" type="text/css"/>
+        <link th:href="@{/common/css/bootstrap-theme.css}" rel="stylesheet" type="text/css"/>
+        <script th:src="@{/common/js/bootstrap.js}"></script>
+    </head>
+</head>
+<body>
+
+</body>
+</html>
