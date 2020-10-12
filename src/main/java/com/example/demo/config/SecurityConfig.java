@@ -55,7 +55,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/common/**","/css/**", "/js/**", "/fonts/**", "/index").permitAll()
+                //放行静态文件
+                .antMatchers("/common/**", "/css/**", "/js/**", "/fonts/**").permitAll()
+                //放行主页
+                .antMatchers("/index","/").permitAll()
+                //放行图标
+                .antMatchers("/favicon.ico").permitAll()
                 .antMatchers(HttpMethod.POST, "/register").permitAll()//放行注册接口
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.GET, "/login").permitAll()

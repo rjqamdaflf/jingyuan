@@ -23,8 +23,14 @@ public class HelloController {
 
     @GetMapping("/")
     public String getIndex() {
-        return "index";
+        return "login";
     }
+
+    @GetMapping("/index")
+    public String getIndex2() {
+        return "login";
+    }
+
 
     @GetMapping("/login")
     public String index() {
