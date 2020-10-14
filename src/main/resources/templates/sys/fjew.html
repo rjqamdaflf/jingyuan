@@ -1,230 +1,286 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>静远实习项目</title>
-    <head>
-        <!-- thymeleaf内联js-->
-        <head>
-            <script>
-                //项目根路径
-                // ctx = /*"\/"*/'';
-                ctx = "";//应用路径
-                console.log('应用路径' + ctx);
-            </script>
-        </head>
-        <!-- 引入公用库 -->
-        <head>
-            <!-- Jquery -->
-            <script src="/common/jquery/jquery-3.1.1.min.js"></script>
-
-
-            <!-- Layui -->
-            <link href="/common/layui/css/layui.css" rel="stylesheet" type="text/css"/>
-            <script src="/common/layui/layui.js"></script>
-
-            <!-- bootstrap -->
-            <link href="/common/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet" type="text/css"/>
-            <link href="/common/bootstrap-3.3.7/css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
-            <link href="/common/common.css" rel="stylesheet" type="text/css"/>
-            <script src="/common/bootstrap-3.3.7/js/bootstrap.js"></script>
-        </head>
-    </head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Data-Table 表格</title>
+    <link rel="stylesheet" href="../frame/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../frame/static/css/style.css">
+    <link rel="icon" href="../frame/static/image/code.png">
+    <!--//表单样式的修改-->
     <style>
-        * {
-            margin: 0;
-            padding: 0
+        .layui-form-label{
+            width: 100px;
         }
-
-        dl {
-            margin-bottom: 0px !important;
+        .layui-input-block {
+            margin-left: 130px;
+            min-height: 36px
         }
     </style>
 </head>
-<body class="layui-layout-body">
-<div class="layui-layout layui-layout-admin">
 
-    <head>
-        <!-- thymeleaf内联js-->
-        <head>
-            <script>
-                //项目根路径
-                // ctx = /*"\/"*/'';
-                ctx = "";//应用路径
-                console.log('应用路径' + ctx);
-            </script>
-        </head>
-        <!-- 引入公用库 -->
-        <head>
-            <!-- Jquery -->
-            <script src="/common/jquery/jquery-3.1.1.min.js"></script>
+<body class="body">
 
-
-            <!-- Layui -->
-            <link href="/common/layui/css/layui.css" rel="stylesheet" type="text/css"/>
-            <script src="/common/layui/layui.js"></script>
-
-            <!-- bootstrap -->
-            <link href="/common/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet" type="text/css"/>
-            <link href="/common/bootstrap-3.3.7/css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
-            <link href="/common/common.css" rel="stylesheet" type="text/css"/>
-            <script src="/common/bootstrap-3.3.7/js/bootstrap.js"></script>
-        </head>
-    </head><div>
-
-    <script>
-        var currentUser = {"id":1,"avatar":null,"email":"i@waylau.com","name":"rjqamdaflf","password":"$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi","username":"rjqamdaflf","dbAuthorities":[{"authorityId":1,"authorityName":"ROLE_ADMIN"},{"authorityId":2,"authorityName":"ROLE_USER"}],"enabled":true,"authorities":[{"authority":"ROLE_ADMIN"},{"authority":"ROLE_USER"}],"accountNonLocked":true,"credentialsNonExpired":true,"accountNonExpired":true}
-        console.log('user', currentUser);
-    </script>
-
-    <div class="layui-header" style="background-color: rgba(54, 123, 183,  0.73)">
-        <div class="layui-logo"><img
-                src='https://avatar.gitee.com/uploads/0/5137900_huanzi-qch.png!avatar100?1562729811'
-                class="layui-nav-img"/>
-            <span>系统用户</span></div>
-        <ul class="layui-nav layui-layout-left">
-            <!-- 动态读取加载用户快捷菜单 -->
-
-        </ul>
-        <ul class="layui-nav layui-layout-right">
-            <li class="layui-nav-item">
-                <a href="javascript:;">
-                    <img src="https://avatar.gitee.com/uploads/0/5137900_huanzi-qch.png!avatar100?1562729811"
-                         class="layui-nav-img">
-                    <span>rjqamdaflf</span>
-                </a>
-                <dl class="layui-nav-child">
-                    <dd><a class="huanzi-menu" data-url="/user/userinfo"
-                           data-id="userinfo" href="javascript:;">基本资料</a></dd>
-                    <dd><a class="huanzi-menu" data-url="/user/shortcMenu"
-                           data-id="shortcMenu" href="javascript:;">个性菜单</a></dd>
-                </dl>
-            </li>
-            <li class="layui-nav-item"><a href="/logout">退出</a></li>
-        </ul>
-    </div>
+<!-- 工具集 -->
+<div class="my-btn-box">
+    <span class="fl">
+        <a class="layui-btn layui-btn-danger radius btn-delect" id="btn-delete-all">批量添加</a>
+        <a class="layui-btn btn-add btn-default" id="btn-get">采集设备总数</a>
+        <a class="layui-btn btn-add btn-default" id="btn-add">添加</a>
+        <a class="layui-btn btn-add btn-default" id="btn-refresh"><i class="layui-icon">&#x1002;</i></a>
+    </span>
+    <span class="fr">
+        <div class="demoTable">
+            <span class="layui-form-label">搜索条件：</span>
+            <!--// 搜索ID：-->
+        <div class="layui-inline">
+         <input class="layui-input" name="id" id="demoReload" autocomplete="off" placeholder="请输入搜索条件">
+        </div>
+        <button class="layui-btn" data-type="reload">查询</button>
+        </div>
+    </span>
 </div>
 
-    <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-    <div class="layui-side layui-bg-black" style="background-color: rgba(54, 123, 183,  0.73)">
-        <div class="layui-side-scroll">
-            <ul class="layui-nav layui-nav-tree" lay-filter="test" style="background-color: rgba(54, 123, 183,  0.73)">
-                <!-- 动态读取加载系统菜单 -->
-                <div>
-                    <li class="layui-nav-item">
-                        <a href="javascript:;">名字</a>
-                        <dl class="layui-nav-child">
-                            <dd><a class="huanzi-menu" data-url="/index"
-                                   data-id="336" href="javascript:;">名字3</a>
-                            </dd>
-                        </dl>
-                        <dl class="layui-nav-child">
-                            <dd><a class="huanzi-menu" data-url="/fjejw"
-                                   data-id="335" href="javascript:;">名字2</a>
-                            </dd>
-                        </dl>
-                        <dl class="layui-nav-child">
-                            <dd><a class="huanzi-menu" data-url="/fjejw1"
-                                   data-id="334" href="javascript:;">名字1</a>
-                            </dd>
-                        </dl>
-                    </li>
 
-                </div>
-                <div>
-                    <li class="layui-nav-item">
-                        <a href="javascript:;">链接管理</a>
-                        <dl class="layui-nav-child">
-                            <dd><a class="huanzi-menu" data-url="/sys/link/center"
-                                   data-id="e8eb629d-6b93-4c3f-b05c-33a87daeace2" href="javascript:;">中心管理</a>
-                            </dd>
-                        </dl>
-                        <dl class="layui-nav-child">
-                            <dd><a class="huanzi-menu" data-url="/sys/link/link"
-                                   data-id="96bfd75b-446c-4382-a88d-8682a4f57222" href="javascript:;">链接管理</a>
-                            </dd>
-                        </dl>
-                        <dl class="layui-nav-child">
-                            <dd><a class="huanzi-menu" data-url="/sys/link/app"
-                                   data-id="04f706bc-234d-41c7-b3e4-9560b79baf7d" href="javascript:;">客户端管理</a>
-                            </dd>
-                        </dl>
-                    </li>
-
-                </div>
-            </ul>
-        </div>
-    </div>
-
-    <!-- 内容主体区域 -->
-    <div class="layui-body" style="overflow-y: hidden;">
-        <!--   动态选项卡   -->
-        <div class="layui-tab" lay-filter="demo" lay-allowclose="true">
-            <!-- 标题 -->
-            <ul class="layui-tab-title">
-                <li class="layui-this" lay-id="11">首页</li>
-            </ul>
-            <!-- 内容 -->
-            <div class="layui-tab-content">
-                <div class="layui-tab-item layui-show">
-                    <div class="layui-row layui-col-space15" style="padding: 20px;background-color: #F2F2F2;">
-                        <div class="layui-col-md6">
-                            <div class="layui-card">
-                                <div class="layui-card-header">欢迎使用</div>
-                                <div class="layui-card-body">
-                                    欢迎你，<span>rjqamdaflf</span>
-                                    <br/>
-                                    <br/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- 底部固定区域 -->
-    <div>
-        <!-- 底部固定区域 -->
-        <div class="layui-footer">
-            © 2019 - 2020 静远实习项目系统
-        </div>
-    </div>
-
-
-</div>
-
-<script>
-    var menuList = [{"menuId":"33","menuName":"\u540D\u5B57","menuPath":"\/fjejw","menuParentId":null,"createTime":"2020-10-14T22:26:19.517+08:00","updateTime":null,"children":[{"menuId":"336","menuName":"\u540D\u5B573","menuPath":"\/index","menuParentId":null,"createTime":"2020-10-14T22:26:19.517+08:00","updateTime":null,"children":[]},{"menuId":"335","menuName":"\u540D\u5B572","menuPath":"\/fjejw","menuParentId":null,"createTime":"2020-10-14T22:26:19.517+08:00","updateTime":null,"children":[]},{"menuId":"334","menuName":"\u540D\u5B571","menuPath":"\/fjejw1","menuParentId":null,"createTime":"2020-10-14T22:26:19.517+08:00","updateTime":null,"children":[]}]},{"menuId":"4e433bd1-fab5-454a-b465-a904f13cc6ef","menuName":"\u94FE\u63A5\u7BA1\u7406","menuPath":"\/sys\/link\/","menuParentId":null,"createTime":"2020-10-14T22:26:19.517+08:00","updateTime":null,"children":[{"menuId":"e8eb629d-6b93-4c3f-b05c-33a87daeace2","menuName":"\u4E2D\u5FC3\u7BA1\u7406","menuPath":"\/sys\/link\/center","menuParentId":null,"createTime":"2020-10-14T22:26:19.517+08:00","updateTime":null,"children":[]},{"menuId":"96bfd75b-446c-4382-a88d-8682a4f57222","menuName":"\u94FE\u63A5\u7BA1\u7406","menuPath":"\/sys\/link\/link","menuParentId":null,"createTime":"2020-10-14T22:26:19.517+08:00","updateTime":null,"children":[]},{"menuId":"04f706bc-234d-41c7-b3e4-9560b79baf7d","menuName":"\u5BA2\u6237\u7AEF\u7BA1\u7406","menuPath":"\/sys\/link\/app","menuParentId":null,"createTime":"2020-10-14T22:26:19.517+08:00","updateTime":null,"children":[]}]}];
-    console.log('menuList' + menuList);
+<!--&lt;!&ndash; 表格 &ndash;&gt;-->
+<script type="text/javascript" src="../frame/layui/layui.js"></script>
+<script type="text/javascript" src="../js/index.js"></script>
+<table class="layui-hide" id="test" lay-filter="test"></table>
+<!-- 表格操作按钮集 -->
+<script type="text/html" id="barOption">
+    <a class="layui-btn layui-btn-mini" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-mini layui-btn-normal" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del">删除</a>
 </script>
 <script>
+    layui.use(['table', 'form', 'layer', 'vip_table'], function () {
 
-    layui.use('element', function () {
-        let element = layui.element;
-        console.log("menu.click");
-        $("body").on("click", ".huanzi-menu", function (e) {
-            let url = $(this).data("url");
-            let id = $(this).data("id");
-            let text = $(this).text();
+// 操作对象
+        var form = layui.form
+            , table = layui.table
+            , layer = layui.layer
+            , vipTable = layui.vip_table
+            , $ = layui.jquery
+        // 表格渲染
+        var tableIns = table.render({
+            elem: '#test'                  //指定原始表格元素选择器（推荐id选择器）
+            , height: vipTable.getFullHeight()    //容器高度
+            , toolbar: '#toolbarDemo'
+            , title: '采集设备表'
+            , cols: [[                  //标题栏
+                {checkbox: true, sort: true, fixed: true, space: true}
+                , {field: 'eqptType', title: 'eqptType', width: 150}
+                , {field: 'eqptTypeName', title: 'eqptTypeName', width: 150}
+                , {field: 'eqptIdCode', title: 'eqptIdCode', width: 150}
+                , {field: 'eqptName', title: 'eqptName', width: 180}
+                , {field: 'createTime', title: 'createTime', width: 200}
+                , {field: 'creator', title: 'creator', width: 100}
+                , {fixed: 'right', width: 178, align: 'center', toolbar: '#barOption'}
+            ]]
+            , id: 'dataCheck'
+            // , url: '../json/decice_type.json'
+            ,url:'/getCollectorInfo'
+            , method: 'get'
+            , page: true
+            , limits: [30, 60, 90, 150, 300]
+            , loading: false
+            , done: function (res) {
+                //如果是异步请求数据方式，res即为你接口返回的信息。
+                //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                console.log(res);
+            }
+        });
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function (obj) {
+            console.log(obj)
+        });
+        //监听工具条
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'detail') {
+                layer.msg('ID：' + data.id + ' 的查看操作');
+            } else if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    $.ajax({
+                        url: "/deleteCollector",
+                        type: "POST",
+                        data: {eqptType: data.eqptType, eqptIdCode: data.eqptIdCode},
+                        success: function (msg) {
+                            var json = JSON.parse(msg);
+                            var returnCode = json.returnCode;
+                            if (returnCode == 200) {
+                                //删除这一行
+                                obj.del();
+                                //关闭弹框
+                                layer.close(index);
+                                layer.msg("删除成功", {icon: 6});
+                            } else {
+                                layer.msg("删除失败", {icon: 5});
+                            }
+                        }
+                    });
+                    return false;
+                });
+            } else if (obj.event === 'edit') {
+                //formData = data;
+                if (obj.event === 'del') {
+                    layer.confirm('真的删除行么', function (index) {
+                        obj.del();
+                        layer.close(index);
+                    });
+                } else if (obj.event === 'edit') {
+                    layer.open({
+                        //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                        type: 1,
+                        title: "修改采集设备信息",
+                        area: ['420px', '330px'],
+                        content: $("#popUpdateTest")//引用的弹出层的页面层的方式加载修改界面表单
+                });
+                    //动态向表传递赋值可以参看文章进行修改界面的更新前数据的显示，当然也是异步请求的要数据的修改数据的获取
+                    setFormValue(obj,data);
+                }
+            }
+        });
+        //监听弹出框表单提交，massage是修改界面的表单数据'submit(demo11),是修改按钮的绑定
+        function setFormValue(obj,data){
+            form.on('submit(demo11)', function(massage) {
+                $.ajax({
+                    url:'/updateCollectorAndConfig',
+                    type:'POST',
+                    data:{oldeqptType:data.eqptType,oldeqptIdCode:data.eqptIdCode,neweqptType:massage.field.neweqptType,neweqptIdCode:massage.field.neweqptIdCode,eqptName:"修改采集器"},
+                    success:function (msg) {
+                        var returnCode = msg.returnCode;//取得返回数据（Sting类型的字符串）的信息进行取值判断
+                        if(returnCode==200){
+                            layer.closeAll('loading');
+                            layer.load(2);
+                            layer.msg("修改成功", {icon: 6});
+                            setTimeout(function(){
+                                obj.update({
+                                    eqptType:massage.field.neweqptType,
+                                    eqptIdCode:massage.field.neweqptIdCode,
+                                    eqptName:massage.field.neweqptName
+                                });//修改成功修改表格数据不进行跳转
+                                layer.closeAll();//关闭所有的弹出层
+                            }, 1000);
+                            加载层-风格
+                        }else{
+                            layer.msg("修改失败", {icon: 5});
+                        }
+                    }
+                })
+            })
 
-            //如果不存在
-            if ($(".layui-tab-title").find("li[lay-id='" + id + "']").length <= 0) {
-                let height = document.documentElement.clientHeight - 160 + "px";
-                element.tabAdd('demo', {
-                    title: text,
-                    //iframe子页面onload新增监听src为/loginPage是父页面跳转/loginPage，解决“俄罗斯套娃”问题
-                    content: "<iframe onload='if(this.contentWindow.location.pathname == \"" + ctx + "/loginPage\"){window.location.href = \"" + ctx + "\"/login\"} $(this)[0].height = document.documentElement.clientHeight-160' width='100%' height='" + height + "' frameborder='0' scrolling='auto' src=\"" + url + "\"></iframe>",
-                    id: id
+        }
+
+
+
+        //添加采集设备
+        $('#btn-add').on('click', function () {
+            layer.open({
+                type: 2,
+                title: '采集设备添加',
+                maxmin: true,
+                area: ['420px', '330px'],
+                shadeClose: false, //点击遮罩不会关闭
+                content: 'CollectorAdd-form.html',//添加设备的from表单是在另一个html中，这是弹出方式的第三种方式
+            });
+        });
+
+
+        //获取采集设备总数
+        $('#btn-get').on('click', function () {
+            var msg = "";
+            $.ajax({
+                url: "/getCollectorInfoTotalRow",
+                type: "get",
+                success: function (data) {
+                    var json = JSON.parse(data)
+                    msg = "采集设备的总数为：" + json.count;
+                    layer.open({
+                        type: 1,
+                        area: ['250px', '180px'],
+                        btn: '关闭',
+                        shadeClose: true, //点击遮罩关闭
+                        content: '<div style="padding:30px;">' + msg + '</div>'
+                        , yes: function () {
+                            layer.closeAll();
+                        }
+                    });
+                }
+            });
+
+        });
+
+        //搜索功能的实现
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        var $ = layui.$, active = {
+            reload: function () {
+                var demoReload = $('#demoReload');
+
+                //执行重载
+                table.reload('idTest', {
+                    where: {
+                        key: {
+                            field: demoReload.val()
+                        }
+                    }
                 });
             }
-            element.tabChange('demo', id);
+        };
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        // 刷新表格
+        $('#btn-refresh').on('click', function () {
+            tableIns.reload()
         });
     });
 </script>
+
+
+//这里是弹出层的表单信息
+//表单的id用于表单的选择，style是在本页隐藏，只有点击编辑才会弹出
+<div class="layui-row" id="popUpdateTest" style="display:none;">
+    <div class="layui-col-md10">
+        <form class="layui-form layui-from-pane" action="" style="margin-top:20px" >
+            <div class="layui-form-item">
+                <label class="layui-form-label">采集设备类型</label>
+                <div class="layui-input-block">
+                    <select name="eqptType" lay-filter="eqptType">
+                        <option value="0a0003biac">0a0003biac</option>
+                        <option value="0a0003ahup" selected="">0a0003ahup</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">eqptIdCode</label>
+                <div class="layui-input-block">
+                    <input type="text" name="neweqptIdCode"  required  lay-verify="required" autocomplete="off" placeholder="请输入采集设备地址" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">eqptName</label>
+                <div class="layui-input-block">
+                    <input type="text" name="neweqptName"  required  lay-verify="required" autocomplete="off" placeholder="请输入采集设备名称" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-top:40px">
+                <div class="layui-input-block">
+                    <button class="layui-btn  layui-btn-submit " lay-submit="" lay-filter="demo11">确认修改</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 </body>
 </html>

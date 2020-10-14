@@ -7,30 +7,37 @@
     <script th:replace="common/head::static"></script>
 </head>
 <body>
-<div class="container">
-    <table id="demo" lay-filter="test"></table>
-
-    <script>
-        layui.use('table', function () {
-            var table = layui.table;
-
-            //第一个实例
-            table.render({
-                elem: '#demo'
-                , height: 312
-                , url: '/sys/link/center/data/' //数据接口
-                , page: true //开启分页
-                , cols: [[ //表头
-                    {field: 'id', title: 'ID', width: 80, sort: true, fixed: 'left'}
-                    , {field: 'updateTime', title: '用户名', width: 80, sort: true}
-                    , {field: 'centerName', title: '性别', width: 80, sort: true}
-                ]]
-            });
-
-        });
+<div>
+    <table id="centerTable" lay-filter="test"></table>
+    <!-- 表格操作按钮集 -->
+    <script type="text/html" id="barOption">
+        <a class="layui-btn layui-btn-mini" lay-event="detail">查看</a>
+        <a class="layui-btn layui-btn-mini layui-btn-normal" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del">删除</a>
     </script>
-
 </div>
+<script>
+    layui.use(['table','layer'], function () {
+        var table = layui.table;
+        console.log("表格函数")
+        //第一个实例
+        table.render({
+            elem: '#centerTable'
+            , height: 450
+            , url: '/sys/link/center/data' //数据接口
+            , page: true //开启分页
+            , limits: [5, 10, 15, 20, 50]
+            , field: "中心管理"
+            , toolbar: '#toolbar'
+            //因为[ [ … ] ]之间的表达式在thymeleaf被认为是内联表达式,所以渲染错误
+            , cols: [ [ //表头
+                  {field: 'updateTime', title: '创建时间', width: 250, sort: true}
+                , {field: 'centerName', title: '中心名称', width: 250, sort: true}
+                , {fixed: 'right', width: 250, align: 'center', toolbar: '#barOption'}
+            ] ]
+        });
 
+    });
+</script>
 </body>
 </html>
