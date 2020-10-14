@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-<!--解决idea thymeleaf 表达式模板报红波浪线-->
-<!--suppress ALL -->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
@@ -8,16 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>静远实习项目</title>
     <script th:replace="common/head::static"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        dl {
+            margin-bottom: 0px !important;
+        }
+    </style>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
 
     <script th:replace="common/head::head"></script>
 
-    <script th:inline="javascript">
-        var menuList = [[${menuList}]];
-        console.log('menuList' + menuList);
-    </script>
     <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
     <div class="layui-side layui-bg-black" style="background-color: rgba(54, 123, 183,  0.73)">
         <div class="layui-side-scroll">
@@ -60,15 +64,6 @@
                                     欢迎你，<span th:text="${currentUser.username}"></span>
                                     <br/>
                                     <br/>
-                                    <p>Base
-                                        Admin是一套简单通用的后台管理系统，主要功能有：权限管理、菜单管理、用户管理，系统设置、实时日志，实时监控，API加密，以及登录用户修改密码、配置个性菜单等</p>
-                                    <br/>
-                                    <br/>
-                                    <p>作者：huanzi-qch</p>
-                                    <p>博客：https://www.cnblogs.com/huanzi-qch</p>
-                                    <p>github：https://github.com/huanzi-qch</p>
-                                    <p>gitee：https://gitee.com/huanzi-qch</p>
-                                    <p>QQ交流群：1015379123</p>
                                 </div>
                             </div>
                         </div>
@@ -78,11 +73,19 @@
         </div>
     </div>
 
+
+    <!-- 底部固定区域 -->
     <script th:replace="common/footer::footer"></script>
 
 
 </div>
+
+<script th:inline="javascript">
+    var menuList = [[${menuList}]];
+    console.log('menuList' + menuList);
+</script>
 <script>
+
     layui.use('element', function () {
         let element = layui.element;
         console.log("menu.click");
@@ -97,7 +100,7 @@
                 element.tabAdd('demo', {
                     title: text,
                     //iframe子页面onload新增监听src为/loginPage是父页面跳转/loginPage，解决“俄罗斯套娃”问题
-                    content: "<iframe onload='if(this.contentWindow.location.pathname == \"" + ctx + "/loginPage\"){window.location.href = \"" + ctx + "\"/loginPage\"} $(this)[0].height = document.documentElement.clientHeight-160' width='100%' height='" + height + "' frameborder='0' scrolling='auto' src=\"" + url + "\"></iframe>",
+                    content: "<iframe onload='if(this.contentWindow.location.pathname == \"" + ctx + "/loginPage\"){window.location.href = \"" + ctx + "\"/login\"} $(this)[0].height = document.documentElement.clientHeight-160' width='100%' height='" + height + "' frameborder='0' scrolling='auto' src='" + url + "'></iframe>",
                     id: id
                 });
             }

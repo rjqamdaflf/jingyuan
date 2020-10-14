@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>中心管理</title>
+    <script th:replace="common/head::static"></script>
+</head>
+<body>
+<div class="container">
+    <table id="demo" lay-filter="test"></table>
+
+    <script>
+        layui.use('table', function () {
+            var table = layui.table;
+
+            //第一个实例
+            table.render({
+                elem: '#demo'
+                , height: 312
+                , url: '/sys/link/center/data/' //数据接口
+                , page: true //开启分页
+                , cols: [[ //表头
+                    {field: 'id', title: 'ID', width: 80, sort: true, fixed: 'left'}
+                    , {field: 'updateTime', title: '用户名', width: 80, sort: true}
+                    , {field: 'centerName', title: '性别', width: 80, sort: true}
+                ]]
+            });
+
+        });
+    </script>
+
+</div>
+
+</body>
+</html>

@@ -1,21 +1,10 @@
-<!--此页面用于放置页面的公共片段（fragment）-->
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">>
+<html xmlns:th="http://www.thymeleaf.org">>
 <head th:fragment="static">
-    <!-- thymeleaf内联js-->
-    <head>
-        <script th:inline="javascript">
-            //项目根路径
-            // ctx = /*[[@{/}]]*/'';
-            ctx = [[${#request.getContextPath()}]];//应用路径
-            console.log('应用路径' + ctx);
-        </script>
-    </head>
     <!-- 引入公用库 -->
     <head>
         <!-- Jquery -->
-        <script th:src="@{/common/jquery/jquery-3.1.1.min.js}"></script>
+        <script th:src="@{/common/jquery/jquery.js}"></script>
 
 
         <!-- Layui -->
@@ -25,7 +14,14 @@
         <!-- bootstrap -->
         <link th:href="@{/common/bootstrap-3.3.7/css/bootstrap.css}" rel="stylesheet" type="text/css"/>
         <link th:href="@{/common/bootstrap-3.3.7/css/bootstrap-theme.css}" rel="stylesheet" type="text/css"/>
+        <link th:href="@{/common/common.css}" rel="stylesheet" type="text/css"/>
         <script th:src="@{/common/bootstrap-3.3.7/js/bootstrap.js}"></script>
+        <script th:inline="javascript">
+            //项目根路径
+            // ctx = /*[[@{/}]]*/'';
+            ctx = [[${#request.getContextPath()}]];//应用路径
+            console.log('应用路径' + ctx);
+        </script>
     </head>
 </head>
 <body>

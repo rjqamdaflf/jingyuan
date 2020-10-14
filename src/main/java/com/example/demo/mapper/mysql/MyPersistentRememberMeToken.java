@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 
+/**
+ * @author 84271
+ */
 @DS("testdb")
 public interface MyPersistentRememberMeToken {
 

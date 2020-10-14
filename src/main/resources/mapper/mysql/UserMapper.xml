@@ -21,7 +21,7 @@
         VALUES (#{user.avatar},#{user.email},#{user.name},#{user.password},#{user.username});
     </insert>
 
-    <select id="UserByUsername" resultMap="userSecurityResultMap">
+    <select id="userByUsername" resultMap="userSecurityResultMap">
         SELECT
         ut.id,
         ut.avatar,

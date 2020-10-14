@@ -21,8 +21,12 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 
+/**
+ * @author 84271
+ */
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true) // 启用方法安全设置
+// 启用方法安全设置
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String KEY = "www.rjqamdaflf.com";
 
@@ -37,7 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();   // 使用 BCrypt 加密
+        // 使用 BCrypt 加密
+        return new BCryptPasswordEncoder();
     }
 
 
@@ -64,7 +69,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/index", "/").permitAll()
                 //放行图标
                 .antMatchers("/favicon.ico").permitAll()
-                .antMatchers(HttpMethod.POST, "/register").permitAll()//放行注册接口
+                //放行注册接口
+                .antMatchers(HttpMethod.POST, "/register").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.GET, "/login").permitAll()
                 .anyRequest().authenticated()
@@ -76,16 +82,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(simpleUrlAuthenticationFailureHandler)
 //                .defaultSuccessUrl("/hello")//登录认证成功后默认转跳的路径
 //                .failureUrl("/login_error") // 登录失败
-                .and().rememberMe().key(KEY) // 启用 remember me
-                .and().exceptionHandling().accessDeniedPage("/403");  // 处理异常，拒绝访问就重定向到 403 页面
-        http.csrf().disable();     //关闭跨站请求防护
+                // 启用 remember me
+                .and().rememberMe().key(KEY)
+                // 处理异常，拒绝访问就重定向到 403 页面
+                .and().exceptionHandling().accessDeniedPage("/403");
+        //关闭跨站请求防护
+        http.csrf().disable();
 
         http
                 //开启记住我
                 .rememberMe()
-                .tokenValiditySeconds(604800)//七天免登陆
+                //七天免登陆
+                .tokenValiditySeconds(604800)
                 .tokenRepository(persistentTokenRepository)
                 .userDetailsService(userDetailsService);
+
+        http.headers().frameOptions().disable();
+
     }
 
     @Resource
@@ -105,7 +118,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
-        authenticationProvider.setPasswordEncoder(passwordEncoder); // 设置密码加密方式
+        // 设置密码加密方式
+        authenticationProvider.setPasswordEncoder(passwordEncoder);
         return authenticationProvider;
     }
 

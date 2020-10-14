@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>静远实习项目</title>
+    <head>
+        <!-- thymeleaf内联js-->
+        <head>
+            <script>
+                //项目根路径
+                // ctx = /*"\/"*/'';
+                ctx = "";//应用路径
+                console.log('应用路径' + ctx);
+            </script>
+        </head>
+        <!-- 引入公用库 -->
+        <head>
+            <!-- Jquery -->
+            <script src="/common/jquery/jquery-3.1.1.min.js"></script>
+
+
+            <!-- Layui -->
+            <link href="/common/layui/css/layui.css" rel="stylesheet" type="text/css"/>
+            <script src="/common/layui/layui.js"></script>
+
+            <!-- bootstrap -->
+            <link href="/common/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+            <link href="/common/bootstrap-3.3.7/css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
+            <link href="/common/common.css" rel="stylesheet" type="text/css"/>
+            <script src="/common/bootstrap-3.3.7/js/bootstrap.js"></script>
+        </head>
+    </head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        dl {
+            margin-bottom: 0px !important;
+        }
+    </style>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+
+    <head>
+        <!-- thymeleaf内联js-->
+        <head>
+            <script>
+                //项目根路径
+                // ctx = /*"\/"*/'';
+                ctx = "";//应用路径
+                console.log('应用路径' + ctx);
+            </script>
+        </head>
+        <!-- 引入公用库 -->
+        <head>
+            <!-- Jquery -->
+            <script src="/common/jquery/jquery-3.1.1.min.js"></script>
+
+
+            <!-- Layui -->
+            <link href="/common/layui/css/layui.css" rel="stylesheet" type="text/css"/>
+            <script src="/common/layui/layui.js"></script>
+
+            <!-- bootstrap -->
+            <link href="/common/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+            <link href="/common/bootstrap-3.3.7/css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
+            <link href="/common/common.css" rel="stylesheet" type="text/css"/>
+            <script src="/common/bootstrap-3.3.7/js/bootstrap.js"></script>
+        </head>
+    </head><div>
+
+    <script>
+        var currentUser = {"id":1,"avatar":null,"email":"i@waylau.com","name":"rjqamdaflf","password":"$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi","username":"rjqamdaflf","dbAuthorities":[{"authorityId":1,"authorityName":"ROLE_ADMIN"},{"authorityId":2,"authorityName":"ROLE_USER"}],"enabled":true,"authorities":[{"authority":"ROLE_ADMIN"},{"authority":"ROLE_USER"}],"accountNonLocked":true,"credentialsNonExpired":true,"accountNonExpired":true}
+        console.log('user', currentUser);
+    </script>
+
+    <div class="layui-header" style="background-color: rgba(54, 123, 183,  0.73)">
+        <div class="layui-logo"><img
+                src='https://avatar.gitee.com/uploads/0/5137900_huanzi-qch.png!avatar100?1562729811'
+                class="layui-nav-img"/>
+            <span>系统用户</span></div>
+        <ul class="layui-nav layui-layout-left">
+            <!-- 动态读取加载用户快捷菜单 -->
+
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="https://avatar.gitee.com/uploads/0/5137900_huanzi-qch.png!avatar100?1562729811"
+                         class="layui-nav-img">
+                    <span>rjqamdaflf</span>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a class="huanzi-menu" data-url="/user/userinfo"
+                           data-id="userinfo" href="javascript:;">基本资料</a></dd>
+                    <dd><a class="huanzi-menu" data-url="/user/shortcMenu"
+                           data-id="shortcMenu" href="javascript:;">个性菜单</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="/logout">退出</a></li>
+        </ul>
+    </div>
+</div>
+
+    <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+    <div class="layui-side layui-bg-black" style="background-color: rgba(54, 123, 183,  0.73)">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree" lay-filter="test" style="background-color: rgba(54, 123, 183,  0.73)">
+                <!-- 动态读取加载系统菜单 -->
+                <div>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">名字</a>
+                        <dl class="layui-nav-child">
+                            <dd><a class="huanzi-menu" data-url="/index"
+                                   data-id="336" href="javascript:;">名字3</a>
+                            </dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd><a class="huanzi-menu" data-url="/fjejw"
+                                   data-id="335" href="javascript:;">名字2</a>
+                            </dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd><a class="huanzi-menu" data-url="/fjejw1"
+                                   data-id="334" href="javascript:;">名字1</a>
+                            </dd>
+                        </dl>
+                    </li>
+
+                </div>
+                <div>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">链接管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a class="huanzi-menu" data-url="/sys/link/center"
+                                   data-id="e8eb629d-6b93-4c3f-b05c-33a87daeace2" href="javascript:;">中心管理</a>
+                            </dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd><a class="huanzi-menu" data-url="/sys/link/link"
+                                   data-id="96bfd75b-446c-4382-a88d-8682a4f57222" href="javascript:;">链接管理</a>
+                            </dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd><a class="huanzi-menu" data-url="/sys/link/app"
+                                   data-id="04f706bc-234d-41c7-b3e4-9560b79baf7d" href="javascript:;">客户端管理</a>
+                            </dd>
+                        </dl>
+                    </li>
+
+                </div>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 内容主体区域 -->
+    <div class="layui-body" style="overflow-y: hidden;">
+        <!--   动态选项卡   -->
+        <div class="layui-tab" lay-filter="demo" lay-allowclose="true">
+            <!-- 标题 -->
+            <ul class="layui-tab-title">
+                <li class="layui-this" lay-id="11">首页</li>
+            </ul>
+            <!-- 内容 -->
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-row layui-col-space15" style="padding: 20px;background-color: #F2F2F2;">
+                        <div class="layui-col-md6">
+                            <div class="layui-card">
+                                <div class="layui-card-header">欢迎使用</div>
+                                <div class="layui-card-body">
+                                    欢迎你，<span>rjqamdaflf</span>
+                                    <br/>
+                                    <br/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 底部固定区域 -->
+    <div>
+        <!-- 底部固定区域 -->
+        <div class="layui-footer">
+            © 2019 - 2020 静远实习项目系统
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    var menuList = [{"menuId":"33","menuName":"\u540D\u5B57","menuPath":"\/fjejw","menuParentId":null,"createTime":"2020-10-14T22:26:19.517+08:00","updateTime":null,"children":[{"menuId":"336","menuName":"\u540D\u5B573","menuPath":"\/index","menuParentId":null,"createTime":"2020-10-14T22:26:19.517+08:00","updateTime":null,"children":[]},{"menuId":"335","menuName":"\u540D\u5B572","menuPath":"\/fjejw","menuParentId":null,"createTime":"2020-10-14T22:26:19.517+08:00","updateTime":null,"children":[]},{"menuId":"334","menuName":"\u540D\u5B571","menuPath":"\/fjejw1","menuParentId":null,"createTime":"2020-10-14T22:26:19.517+08:00","updateTime":null,"children":[]}]},{"menuId":"4e433bd1-fab5-454a-b465-a904f13cc6ef","menuName":"\u94FE\u63A5\u7BA1\u7406","menuPath":"\/sys\/link\/","menuParentId":null,"createTime":"2020-10-14T22:26:19.517+08:00","updateTime":null,"children":[{"menuId":"e8eb629d-6b93-4c3f-b05c-33a87daeace2","menuName":"\u4E2D\u5FC3\u7BA1\u7406","menuPath":"\/sys\/link\/center","menuParentId":null,"createTime":"2020-10-14T22:26:19.517+08:00","updateTime":null,"children":[]},{"menuId":"96bfd75b-446c-4382-a88d-8682a4f57222","menuName":"\u94FE\u63A5\u7BA1\u7406","menuPath":"\/sys\/link\/link","menuParentId":null,"createTime":"2020-10-14T22:26:19.517+08:00","updateTime":null,"children":[]},{"menuId":"04f706bc-234d-41c7-b3e4-9560b79baf7d","menuName":"\u5BA2\u6237\u7AEF\u7BA1\u7406","menuPath":"\/sys\/link\/app","menuParentId":null,"createTime":"2020-10-14T22:26:19.517+08:00","updateTime":null,"children":[]}]}];
+    console.log('menuList' + menuList);
+</script>
+<script>
+
+    layui.use('element', function () {
+        let element = layui.element;
+        console.log("menu.click");
+        $("body").on("click", ".huanzi-menu", function (e) {
+            let url = $(this).data("url");
+            let id = $(this).data("id");
+            let text = $(this).text();
+
+            //如果不存在
+            if ($(".layui-tab-title").find("li[lay-id='" + id + "']").length <= 0) {
+                let height = document.documentElement.clientHeight - 160 + "px";
+                element.tabAdd('demo', {
+                    title: text,
+                    //iframe子页面onload新增监听src为/loginPage是父页面跳转/loginPage，解决“俄罗斯套娃”问题
+                    content: "<iframe onload='if(this.contentWindow.location.pathname == \"" + ctx + "/loginPage\"){window.location.href = \"" + ctx + "\"/login\"} $(this)[0].height = document.documentElement.clientHeight-160' width='100%' height='" + height + "' frameborder='0' scrolling='auto' src=\"" + url + "\"></iframe>",
+                    id: id
+                });
+            }
+            element.tabChange('demo', id);
+        });
+    });
+</script>
+</body>
+</html>

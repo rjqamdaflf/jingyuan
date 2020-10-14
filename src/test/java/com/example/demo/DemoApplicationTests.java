@@ -25,7 +25,7 @@ public class DemoApplicationTests {
 
     @Test
     public void testUserDao() {
-        UserSecurityDto user = userDao.UserByUsername("admin");
+        UserSecurityDto user = userDao.userByUsername("admin");
         System.out.println(user);
         System.out.println(user.getAuthorities());
     }

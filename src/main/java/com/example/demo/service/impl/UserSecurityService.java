@@ -10,6 +10,8 @@ import javax.annotation.Resource;
 
 /**
  * 鉴权服务
+ *
+ * @author 84271
  */
 @Service
 public class UserSecurityService implements UserDetailsService {
@@ -20,6 +22,6 @@ public class UserSecurityService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return userDao.UserByUsername(s);
+        return userDao.userByUsername(s);
     }
 }
