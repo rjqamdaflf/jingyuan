@@ -16,6 +16,8 @@ import java.io.IOException;
 
 /**
  * 登录成功处理器
+ *
+ * @author 84271
  */
 @Component
 public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {

@@ -2,8 +2,11 @@ package com.example.demo.dto;
 
 import lombok.Data;
 
+/**
+ * @author 84271
+ */
 @Data
-public class Result<T> {
+public class Result {
     /**
      * 错误码.
      */
@@ -17,6 +20,6 @@ public class Result<T> {
     /**
      * 具体的内容.
      */
-    private T data;
+    private Object data;
 
 }

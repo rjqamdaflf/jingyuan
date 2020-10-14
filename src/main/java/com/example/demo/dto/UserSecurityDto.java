@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author 84271
+ */
 @Data
 public class UserSecurityDto implements UserDetails {
     private Long id;
@@ -38,6 +41,7 @@ public class UserSecurityDto implements UserDetails {
 
     /**
      * 账号是否被锁定
+     *
      * @return
      */
     @Override
@@ -53,5 +57,11 @@ public class UserSecurityDto implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public static UserSecurityDto buildEmptyUser() {
+        UserSecurityDto user = new UserSecurityDto();
+        user.setName("未登录");
+        return user;
     }
 }

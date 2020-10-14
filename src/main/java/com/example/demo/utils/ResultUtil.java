@@ -5,6 +5,8 @@ import com.example.demo.dto.Result;
 
 /**
  * 统一数据返回
+ *
+ * @author 84271
  */
 public class ResultUtil {
 
