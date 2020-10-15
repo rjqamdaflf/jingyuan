@@ -33,6 +33,11 @@ public class SysLinkController {
         return "sys/center";
     }
 
+        @GetMapping("/management/toAdd")
+    public String managementToAdd() {
+        return "sys/centerAdd";
+    }
+
     @GetMapping("/data")
     @ResponseBody
     public Result sysCenterData(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
