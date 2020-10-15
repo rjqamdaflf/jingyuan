@@ -1,8 +1,8 @@
 package com.example.demo.mapper.mysql;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.demo.entity.CenterManagement;
-
-import java.util.List;
 
 /**
  * @program: demo
@@ -12,9 +12,15 @@ import java.util.List;
  * @Date: 2020/10/14 22:09
  * @Version: 1.0.0
  */
-public interface CentrerManagementDao {
+public interface CentrerManagementDao extends BaseMapper<CenterManagement> {
 
-    List<CenterManagement> findAll();
+    /**
+     * 查询所有，分页
+     *
+     * @param page
+     * @return
+     */
+    IPage<CenterManagement> findAll(IPage<CenterManagement> page);
 
 }
 

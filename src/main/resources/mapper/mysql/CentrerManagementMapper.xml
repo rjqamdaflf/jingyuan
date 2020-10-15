@@ -6,6 +6,6 @@
 
 
     <select id="findAll" resultType="com.example.demo.entity.CenterManagement">
-        SELECT * FROM centrer_management
+        SELECT * FROM center_management
     </select>
 </mapper>

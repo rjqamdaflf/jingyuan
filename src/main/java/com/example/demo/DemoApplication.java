@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author 84271
  */
 @SpringBootApplication
-@MapperScan("com.example.demo.mapper")
 public class DemoApplication {
 
     public static void main(String[] args) {

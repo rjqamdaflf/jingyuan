@@ -1,5 +1,7 @@
 package com.example.demo.daotest;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.DemoApplicationTests;
 import com.example.demo.entity.CenterManagement;
 import com.example.demo.mapper.mysql.CentrerManagementDao;
@@ -7,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @Slf4j
 public class CentrerManagementDaoTest extends DemoApplicationTests {
@@ -17,7 +18,8 @@ public class CentrerManagementDaoTest extends DemoApplicationTests {
 
     @Test
     public void test1() {
-        List<CenterManagement> all = centrerManagementDao.findAll();
-        all.forEach(e -> log.info(String.valueOf(e)));
+        IPage<CenterManagement> page = new Page<>(1, 10);
+        IPage<CenterManagement> all = centrerManagementDao.findAll(page);
+        all.getRecords().forEach(System.out::println);
     }
 }

@@ -6,7 +6,7 @@ import lombok.Data;
  * @author 84271
  */
 @Data
-public class Result {
+public class Result extends Pageable {
     /**
      * 错误码.
      */

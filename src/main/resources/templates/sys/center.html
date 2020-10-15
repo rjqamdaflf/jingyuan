@@ -4,6 +4,9 @@
 <head>
     <meta charset="utf-8">
     <title>中心管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <script th:replace="common/head::static"></script>
 </head>
 <body>
@@ -11,30 +14,84 @@
     <table id="centerTable" lay-filter="test"></table>
     <!-- 表格操作按钮集 -->
     <script type="text/html" id="barOption">
-        <a class="layui-btn layui-btn-mini" lay-event="detail">查看</a>
-        <a class="layui-btn layui-btn-mini layui-btn-normal" lay-event="edit">编辑</a>
+        <!--        <a class="layui-btn layui-btn-mini layui-btn-normal" lay-event="edit">编辑</a>-->
         <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del">删除</a>
     </script>
 </div>
 <script>
-    layui.use(['table','layer'], function () {
-        var table = layui.table;
+    layui.use('table', function () {
+        let table = layui.table;
         console.log("表格函数")
-        //第一个实例
-        table.render({
+        //实例
+        let centerTable = table.render({
             elem: '#centerTable'
-            , height: 450
+            , height: 530
             , url: '/sys/link/center/data' //数据接口
+            , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             , page: true //开启分页
             , limits: [5, 10, 15, 20, 50]
             , field: "中心管理"
             , toolbar: '#toolbar'
             //因为[ [ … ] ]之间的表达式在thymeleaf被认为是内联表达式,所以渲染错误
-            , cols: [ [ //表头
-                  {field: 'updateTime', title: '创建时间', width: 250, sort: true}
-                , {field: 'centerName', title: '中心名称', width: 250, sort: true}
-                , {fixed: 'right', width: 250, align: 'center', toolbar: '#barOption'}
-            ] ]
+            , cols: [
+                [ //表头
+                    {field: 'updateTime', title: '创建时间', align: 'center', edit: 'text', event: 'date', sort: true}
+                    , {field: 'centerName', title: '中心名称', edit: 'text', align: 'center', sort: true}
+                    , {fixed: 'right', align: 'center', toolbar: '#barOption'}
+                ]
+            ]
+        });
+
+        //监听单元格编辑
+        table.on('edit(test)', function (obj) {
+            console.log('编辑obj', obj)
+            let value = obj.value //得到修改后的值
+                , data = obj.data //得到所在行所有键值
+                , field = obj.field; //得到字段
+            console.log('编辑', data);
+            editCenterManagement(data);
+
+        });
+
+        function editCenterManagement(data) {
+            console.log('editCenterManagement', data);
+            $.post(ctx + "/sys/link/center/management/edit/", data, function (data) {
+                console.log('delCenterManagement回调函数', data);
+                if (data.code === 0) {
+                    layer.msg("更新成功！", {icon: 1, time: 2000});
+                    centerTable.reload();
+                } else {
+                    layer.msg("更新失败！原因：" + data.msg, {icon: 2, time: 2000});
+                    centerTable.reload();
+                }
+            });
+        }
+
+        function delCenterManagement(obj) {
+            console.log('delCenterManagement', obj);
+            $.get(ctx + "/sys/link/center/management/del/" + obj.data.id, function (data) {
+                console.log('delCenterManagement回调函数', data);
+                if (data.code === 0) {
+                    layer.msg("删除成功！", {icon: 1, time: 2000});
+                    centerTable.reload();
+                } else {
+                    layer.msg("删除失败！原因：" + data.msg, {icon: 2, time: 2000});
+                }
+            });
+        }
+
+
+        //监听工具条
+        table.on('tool(test)', function (obj) {
+            let data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    console.log('删除', data);
+                    // obj.del();
+                    layer.close(index);
+                    delCenterManagement(obj);
+                });
+            }
         });
 
     });
