@@ -75,7 +75,7 @@ public class SysCenterController {
     @PostMapping("/management/edit/")
     @ResponseBody
     public Result editCenterData(CenterManagement centerManagement) {
-        log.info(String.valueOf(centerManagement));
+        log.info("CenterData编辑，数据为：{}", centerManagement);
         centrerManagementDao.updateById(centerManagement);
         return ResultUtil.success();
     }

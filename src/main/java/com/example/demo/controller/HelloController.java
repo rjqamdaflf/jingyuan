@@ -1,7 +1,5 @@
 package com.example.demo.controller;
 
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONObject;
 import com.example.demo.dto.Result;
 import com.example.demo.dto.UserSecurityDto;
 import com.example.demo.service.MenuService;
@@ -61,21 +59,6 @@ public class HelloController {
     @ResponseBody
     public String hello() {
         return "hello";
-    }
-
-    @GetMapping("/data")
-    @ResponseBody
-    public Result data() {
-
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.putOpt("id", 1);
-        jsonObject.putOpt("birthday", "");
-
-        JSONArray jsonArray = new JSONArray();
-        jsonArray.add(jsonObject);
-        jsonArray.add(jsonObject);
-        jsonArray.add(jsonObject);
-        return ResultUtil.success(jsonArray);
     }
 
 
