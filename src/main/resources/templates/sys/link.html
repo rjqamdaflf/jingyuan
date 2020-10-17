@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>链接管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <script th:replace="common/head::static"></script>
+</head>
+<body>
+<div>
+    <div class="site-demo-button" id="layerDemo" style="margin-bottom: 0;">
+        <button data-method="centerAdd" type="button" class="layui-btn layui-btn-lg layui-btn-radius"
+                style="width: 150px">
+            <i class="layui-icon">&#xe608;</i> 添加
+        </button>
+    </div>
+    <table id="linkTable" lay-filter="test"></table>
+    <!-- 表格操作按钮集 -->
+    <script type="text/html" id="barOption">
+        <!--        <a class="layui-btn layui-btn-mini layui-btn-normal" lay-event="edit">编辑</a>-->
+        <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del">删除</a>
+    </script>
+</div>
+<script>
+    layui.use(['table', 'layer'], function (message) {
+        let $ = layui.jquery, layer = layui.layer, table = layui.table;
+        //实例
+        let linkTable = table.render({
+            elem: '#linkTable'
+            , height: 530
+            , url: '/sys/link/center/data' //数据接口
+            , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            , page: true //开启分页
+            , limits: [5, 10, 15, 20, 50]
+            , field: "中心管理"
+            , toolbar: '#toolbar'
+            //因为[ [ … ] ]之间的表达式在thymeleaf被认为是内联表达式,所以渲染错误
+            , cols: [
+                [ //表头
+                    {field: 'updateTime', title: '创建时间', align: 'center', edit: 'text', event: 'date', sort: true}
+                    , {field: 'centerName', title: '中心名称', edit: 'text', align: 'center', sort: true}
+                    , {fixed: 'right', align: 'center', toolbar: '#barOption'}
+                ]
+            ]
+        });
+
+        //监听单元格编辑
+        table.on('edit(test)', function (obj) {
+            console.log('编辑obj', obj)
+            let value = obj.value //得到修改后的值
+                , data = obj.data //得到所在行所有键值
+                , field = obj.field; //得到字段
+            console.log('编辑', data);
+            editCenterManagement(data);
+        });
+
+        function editCenterManagement(data) {
+            console.log('editCenterManagement', data);
+            $.post(ctx + "/sys/link/center/management/edit/", data, function (data) {
+                console.log('delCenterManagement回调函数', data);
+                if (data.code === 0) {
+                    layer.msg("更新成功！", {icon: 1, time: 2000});
+                    linkTable.reload();
+                } else {
+                    layer.msg("更新失败！原因：" + data.msg, {icon: 2, time: 2000});
+                    linkTable.reload();
+                }
+            });
+        }
+
+        function delCenterManagement(obj) {
+            console.log('delCenterManagement', obj);
+            $.get(ctx + "/sys/link/center/management/del/" + obj.data.id, function (data) {
+                console.log('delCenterManagement回调函数', data);
+                if (data.code === 0) {
+                    layer.msg("删除成功！", {icon: 1, time: 2000});
+                    linkTable.reload();
+                } else {
+                    layer.msg("删除失败！原因：" + data.msg, {icon: 2, time: 2000});
+                }
+            });
+        }
+
+
+        //监听工具条
+        table.on('tool(test)', function (obj) {
+            let data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    console.log('删除', data);
+                    // obj.del();
+                    layer.close(index);
+                    delCenterManagement(obj);
+                });
+            }
+        });
+
+        //todo: 新增待完成
+        // 触发事件
+        let active = {
+            centerAdd: function () {
+                var that = this;
+                //示范一个公告层
+                layer.open({
+                    type: 2//0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层)
+                    //数组第二项可以写任意css样式；如果你不想显示标题栏，你可以title: false
+                    , title: '新增中心管理项'
+                    , closeBtn: false
+                    , area: 'auto'//定义宽高
+                    , shade: 0.6//遮幕
+                    , id: 'LAY_centerManagementAdd' //设定一个id，防止重复弹出
+                    , btn: ['新增', '取消']
+                    , btnAlign: 'c'//按钮排列：居中对齐
+                    , moveType: 1 //拖拽模式，0或者1
+                    , content: '/sys/link/center/management/toAdd'//跳转到想要的界面，这里是我自己项目的跳转界面
+                    , yes: function (index, layero) {
+                        console.log("success,index=", index, '+layero=', layero);
+                        let body = layer.getChildFrame("body", index);
+                        let data = body.find(".layui-input").val();
+                        $.post('/sys/link/center/management/add', {'centerName': data}, function (data) {
+                            console.log('sys/link/center/management/add', data);
+                            if (data.code === 0) {
+                                //如果设定了yes回调，需进行手工关闭
+                                layer.close(index);
+                                layer.msg("添加成功", {icon: 1, time: 2000});
+                                linkTable.reload();
+                            } else {
+                                layer.msg("删除失败！原因：" + data.msg, {icon: 2, time: 2000});
+                            }
+                        })
+                        console.log("新增,数据为：", data);
+                    }
+                })
+            }
+        }
+        $('#layerDemo .layui-btn').on('click', function () {
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+    });
+</script>
+</body>
+</html>

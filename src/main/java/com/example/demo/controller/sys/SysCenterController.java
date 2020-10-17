@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.controller.sys;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 /**
@@ -25,12 +24,12 @@ import java.util.Date;
 @Slf4j
 @Controller
 @RequestMapping("/sys/link/center")
-public class SysLinkController {
+public class SysCenterController {
     @Resource
     private CentrerManagementDao centrerManagementDao;
 
     @GetMapping
-    public String sysCenter(HttpServletResponse response) {
+    public String sysCenter() {
         return "sys/center";
     }
 
