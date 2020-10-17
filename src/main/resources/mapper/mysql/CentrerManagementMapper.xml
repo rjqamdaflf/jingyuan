@@ -8,4 +8,7 @@
     <select id="findAll" resultType="com.example.demo.entity.CenterManagement">
         SELECT * FROM center_management
     </select>
+    <select id="findList" resultType="com.example.demo.vo.CenterManagementVo">
+        SELECT id AS name, center_name AS value FROM center_management
+    </select>
 </mapper>

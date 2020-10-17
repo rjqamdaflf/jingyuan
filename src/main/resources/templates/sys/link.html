@@ -14,17 +14,17 @@
             display: none;
         }
 
-        /*!* 防止下拉框的下拉列表被隐藏---必须设置--- *!*/
-        /*.layui-table-cell {*/
-        /*    overflow: visible !important;*/
-        /*}*/
+        /* !* 防止下拉框的下拉列表被隐藏---必须设置--- *!
+         .layui-table-cell {
+             overflow: visible !important;
+         }
 
-        /*!* 使得下拉框与单元格刚好合适 *!*/
-        /*td .layui-form-select {*/
-        /*    margin-top: -10px;*/
-        /*    margin-left: -15px;*/
-        /*    margin-right: -15px;*/
-        /*}*/
+         !* 使得下拉框与单元格刚好合适 *!
+         td .layui-form-select {
+             margin-top: -10px;
+             margin-left: -15px;
+             margin-right: -15px;
+         }*/
     </style>
 </head>
 <body>
@@ -41,15 +41,8 @@
         <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del">删除</a>
     </script>
 
-    <!--    下拉框-->
-    <script type="text/html" id="selectCenter">
-        <select name='roleId' id='roleId' lay-filter="roleId[Select](http://www.blog2019.net/tag/Select?tagId=271)"
-                data-value={{d.roleId}} lay-verify='' lay-search=''>
-            <option value=""></option>
-            <option value="父子">父子</option>
-            <option value="母子">母子</option>
-            <option value="姐弟">姐弟</option>
-            <option value="弟弟">弟弟</option>
+    <script type="text/html" id="selectCenterName">
+        <select name="CenterName" lay-filter="CenterName" data-value="{{d.centerName}}">
 
         </select>
     </script>
@@ -61,20 +54,40 @@
             tableEdit: 'tableEdit'
         }).use(['table', 'tableEdit', 'layer'], function () {
             let table = layui.table, tableEdit = layui.tableEdit, $ = layui.$;
-            // var params = [{name:undefined,value:""},{name:1,value:"张三1"},{name:2,value:"张三2"},{name:3,value:"张三3"},{name:4,value:"张三4"},{name:5,value:"张三5"}];
-            let params;
-            $.get(ctx + "/sys/link/center/findAll", function (data) {
-                console.log('获取center data', data);
-                if (data.code === 0) {
-                    params = data;
+            let params = [{name: undefined, value: ""}, {name: 1, value: "张三1"},
+                {name: 2, value: "张三2"}, {name: 3, value: "张三3"},
+                {name: 4, value: "张三4"}, {name: 5, value: "张三5"}];
+            // let params = [];
+
+
+            $.ajax({
+                url: ctx + "/sys/link/center/findAll",
+                type: "get",
+                async: false,
+                success: function (data) {
+                    console.log('获取center data', data);
+                    if (data.code === 0) {
+                        params = data.data;
+                    }
                 }
+
             })
+
+
+            // $.get(ctx + "/sys/link/center/findAll", function (data) {
+            //     console.log('获取center data', data);
+            //     if (data.code === 0) {
+            //         params = data.data;
+            //         console.log('sys/link/center/findAll', params);
+            //         layui.form.render("select");
+            //     }
+            // })
 
             let linkTable = table.render({
                 elem: '#linkTable'
                 , id: 'link_table_id'
                 , url: '/sys/link/link/data' //数据接口
-                , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                , cellMinWidth: 30 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
                 , page: true //开启分页
                 , limits: [5, 10, 15, 20, 50]
                 , field: "链接管理"
@@ -113,18 +126,14 @@
                         title: '所属中心',
                         align: 'center',
                         sort: true,
-                        event: 'centerSelect',
-                        config: {type: 'select', data: params, verify: true},
+                        event: 'updateCenterName',
                         templet: function (d) {
-                            console.log('abb', d)
-                            if (d.centerSelect) {
-                                if (d.centerSelect.value) {
-                                    return d.centerSelect.value;
-                                }
-                                return d.centerSelect;
+                            // console.log('abb', d);
+                            if (d.centerName) {
+                                return d.centerName;
                             }
-                            return ''
-                        }
+                            return '';
+                        }, config: {type: 'select', data: params, verify: true}
                     }
                         , {fixed: 'right', title: '操作', width: 100, align: 'center', toolbar: '#barOption'}
                     ]
@@ -185,6 +194,17 @@
                     obj.update(update);
                     data[field] = value;
                     console.log('编辑', data, '修改后的值：', value);
+                    editLinkManagement(data);
+                } else if (obj.event === 'updateCenterName') {
+                    console.log('编辑obj', obj)
+                    let value = obj.value //得到修改后的值
+                        , data = obj.data //得到所在行所有键值
+                        , field = obj.field; //得到字段
+                    let update = {};
+                    update[field] = value.value;
+                    obj.update(update);
+                    data['centerId'] = value.name;
+                    console.log('编辑', data, '字段', field, '修改后的值：', value);
                     editLinkManagement(data);
                 }
             });

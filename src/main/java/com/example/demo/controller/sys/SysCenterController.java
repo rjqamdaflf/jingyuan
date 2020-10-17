@@ -61,7 +61,7 @@ public class SysCenterController {
     @GetMapping("/findAll")
     @ResponseBody
     public Result getAllCenter() {
-        return ResultUtil.success(centrerManagementDao.selectList(null));
+        return ResultUtil.success(centrerManagementDao.findList());
     }
 
 

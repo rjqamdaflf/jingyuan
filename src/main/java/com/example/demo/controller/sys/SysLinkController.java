@@ -61,6 +61,7 @@ public class SysLinkController {
         log.info("editLinkData，数据为：{}", linkManagement);
         String centerId = linkManagement.getCenterId();
         CenterManagement centerManagement = centrerManagementDao.selectById(centerId);
+        log.info("centerManagement,{}", centerManagement);
         if (centerManagement == null) {
             throw new RuntimeException("所属中心不存在");
         }
