@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 /**
  * @program: demo
@@ -33,9 +34,20 @@ public class SysLinkController {
         return "sys/center";
     }
 
-        @GetMapping("/management/toAdd")
+    @GetMapping("/management/toAdd")
     public String managementToAdd() {
         return "sys/centerAdd";
+    }
+
+    @PostMapping("/management/add")
+    @ResponseBody
+    public Result managementAdd(String centerName) {
+        log.info("添加中心管理名称，名称为：{}", centerName);
+        CenterManagement save = new CenterManagement();
+        save.setCenterName(centerName);
+        save.setUpdateTime(new Date());
+        centrerManagementDao.insert(save);
+        return ResultUtil.success();
     }
 
     @GetMapping("/data")

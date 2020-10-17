@@ -25,7 +25,7 @@
     </script>
 </div>
 <script>
-    layui.use(['table', 'layer'], function () {
+    layui.use(['table', 'layer'], function (message) {
         let $ = layui.jquery, layer = layui.layer, table = layui.table;
         //实例
         let centerTable = table.render({
@@ -102,26 +102,36 @@
         // 触发事件
         let active = {
             centerAdd: function () {
+                var that = this;
                 //示范一个公告层
                 layer.open({
                     type: 2//0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层)
-                    , title: '新增中心管理项' //不显示标题栏
+                    //数组第二项可以写任意css样式；如果你不想显示标题栏，你可以title: false
+                    , title: '新增中心管理项'
                     , closeBtn: false
-                    , area: ['300px', '250px']//定义宽高
+                    , area: 'auto'//定义宽高
                     , shade: 0.6//遮幕
                     , id: 'LAY_centerManagementAdd' //设定一个id，防止重复弹出
                     , btn: ['新增', '取消']
                     , btnAlign: 'c'//按钮排列：居中对齐
                     , moveType: 1 //拖拽模式，0或者1
                     , content: '/sys/link/center/management/toAdd'//跳转到想要的界面，这里是我自己项目的跳转界面
-                    , success: function (layero) {
-                        console.log("success", layero);
-
-                        // let btn = layero.find('.layui-layer-btn');
-                        // btn.find('.layui-layer-btn0').attr({
-                        //     href: '/sys/link/center/management/toAdd'
-                        //     , target: '_blank'
-                        // });
+                    , yes: function (index, layero) {
+                        console.log("success,index=", index, '+layero=', layero);
+                        let body = layer.getChildFrame("body", index);
+                        let data = body.find(".layui-input").val();
+                        $.post('/sys/link/center/management/add', {'centerName': data}, function (data) {
+                            console.log('sys/link/center/management/add', data);
+                            if (data.code === 0) {
+                                //如果设定了yes回调，需进行手工关闭
+                                layer.close(index);
+                                layer.msg("添加成功", {icon: 1, time: 2000});
+                                centerTable.reload();
+                            } else {
+                                layer.msg("删除失败！原因：" + data.msg, {icon: 2, time: 2000});
+                            }
+                        })
+                        console.log("新增,数据为：", data);
                     }
                 })
             }

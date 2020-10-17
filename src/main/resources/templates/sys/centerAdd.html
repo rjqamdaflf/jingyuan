@@ -10,24 +10,22 @@
     <script th:replace="common/head::static"></script>
 </head>
 <body>
-<div class="container">
-    <form class="layui-form" lay-filter="centerAdd" style="margin:0px auto">
-        <div class="layui-form-item" style="margin: 50px 0px">
-            <label class="layui-form-label" style="width: 100px">中心名称</label>
-            <div class="layui-input-block">
-                <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入中心名称"
-                       class="layui-input">
-            </div>
+<form class="layui-form" lay-filter="centerAdd" style="margin: 50px auto">
+    <div class="layui-form-item layui-row">
+        <label class="layui-form-label" style="width: 100px">中心名称</label>
+        <div class="layui-input-block" style="width: 180px">
+            <input type="text" name="name" lay-verify="name" autocomplete="off" placeholder="请输入中心名称"
+                   class="layui-input centerName">
         </div>
-        <!--        <div class="layui-form-item">-->
-        <!--            <label class="layui-form-label">时间</label>-->
-        <!--            <div class="layui-input-inline">-->
-        <!--                <input type="text" name="date" id="date" lay-verify="date" placeholder="" autocomplete="off"-->
-        <!--                       class="layui-input">-->
-        <!--            </div>-->
-        <!--        </div>-->
-    </form>
-</div>
+    </div>
+    <!--        <div class="layui-form-item">-->
+    <!--            <label class="layui-form-label">时间</label>-->
+    <!--            <div class="layui-input-inline">-->
+    <!--                <input type="text" name="date" id="date" lay-verify="date" placeholder="" autocomplete="off"-->
+    <!--                       class="layui-input">-->
+    <!--            </div>-->
+    <!--        </div>-->
+</form>
 <script>
     layui.use(['form', 'layedit', 'laydate'], function () {
         var form = layui.form
@@ -40,6 +38,14 @@
         //     elem: '#date'
         // });
     });
+
+    document.onkeydown = function (e) {
+        let ev = parent.document.all ? window.event : e;
+        if (ev.keyCode === 13) {
+            return false
+        }
+    }
+
 </script>
 </body>
 </html>
