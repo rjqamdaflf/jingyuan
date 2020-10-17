@@ -27,7 +27,7 @@
          }*/
     </style>
 </head>
-<body>
+<body style="height: 100%">
 <div>
     <div class="site-demo-button" id="layerDemo" style="margin-bottom: 0;">
         <button data-method="centerAdd" type="button" class="layui-btn layui-btn-lg layui-btn-radius"
@@ -70,24 +70,13 @@
                         params = data.data;
                     }
                 }
-
             })
-
-
-            // $.get(ctx + "/sys/link/center/findAll", function (data) {
-            //     console.log('获取center data', data);
-            //     if (data.code === 0) {
-            //         params = data.data;
-            //         console.log('sys/link/center/findAll', params);
-            //         layui.form.render("select");
-            //     }
-            // })
 
             let linkTable = table.render({
                 elem: '#linkTable'
                 , id: 'link_table_id'
                 , url: '/sys/link/link/data' //数据接口
-                , cellMinWidth: 30 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                , cellMinWidth: 160 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
                 , page: true //开启分页
                 , limits: [5, 10, 15, 20, 50]
                 , field: "链接管理"
@@ -211,7 +200,6 @@
             // 触发事件
             let active = {
                 centerAdd: function () {
-                    var that = this;
                     //示范一个公告层
                     layer.open({
                         type: 2//0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层)
