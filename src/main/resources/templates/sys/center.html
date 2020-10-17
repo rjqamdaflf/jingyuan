@@ -25,8 +25,12 @@
     </script>
 </div>
 <script>
-    layui.use(['table', 'layer'], function (message) {
-        let $ = layui.jquery, layer = layui.layer, table = layui.table;
+    layui.config({
+        base: '../../common/layui/lay/modules/'
+    }).extend({
+        tableEdit: 'tableEdit'
+    }).use(['table', 'tableEdit', 'layer'], function (message) {
+        let $ = layui.jquery, layer = layui.layer, table = layui.table, tableEdit = layui.tableEdit;
         //实例
         let centerTable = table.render({
             elem: '#centerTable'
@@ -40,22 +44,30 @@
             //因为[ [ … ] ]之间的表达式在thymeleaf被认为是内联表达式,所以渲染错误
             , cols: [
                 [ //表头
-                    {field: 'updateTime', title: '创建时间', align: 'center', edit: 'text', event: 'date', sort: true}
-                    , {field: 'centerName', title: '中心名称', edit: 'text', align: 'center', sort: true}
-                    , {fixed: 'right', align: 'center', toolbar: '#barOption'}
+                    {field: 'id', title: 'id', align: 'center', hide: true},
+                    {
+                        field: 'updateTime',
+                        title: '创建时间',
+                        align: 'center',
+                        event: 'updateCenter',
+                        sort: true,
+                        config: {type: 'date', dateType: 'date'}
+                    }
+                    , {
+                    field: 'centerName',
+                    title: '中心名称',
+                    align: 'center',
+                    sort: true,
+                    event: 'updateCenter',
+                    config: {type: 'input'}
+                }
+                    , {fixed: 'right', width: 100, align: 'center', toolbar: '#barOption'}
                 ]
             ]
         });
 
-        //监听单元格编辑
-        table.on('edit(test)', function (obj) {
-            console.log('编辑obj', obj)
-            let value = obj.value //得到修改后的值
-                , data = obj.data //得到所在行所有键值
-                , field = obj.field; //得到字段
-            console.log('编辑', data);
-            editCenterManagement(data);
-        });
+
+        let aopTable = tableEdit.aopObj(centerTable.config.cols); //获取一个aop对象
 
         function editCenterManagement(data) {
             console.log('editCenterManagement', data);
@@ -86,7 +98,7 @@
 
 
         //监听工具条
-        table.on('tool(test)', function (obj) {
+        aopTable.on('tool(test)', function (obj) {
             let data = obj.data;
             if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {
@@ -95,10 +107,20 @@
                     layer.close(index);
                     delCenterManagement(obj);
                 });
+            } else if (obj.event === 'updateCenter') {
+                console.log('编辑obj', obj)
+                let value = obj.value //得到修改后的值
+                    , data = obj.data //得到所在行所有键值
+                    , field = obj.field; //得到字段
+                let update = {};
+                update[field] = value;
+                obj.update(update);
+                data[field] = value;
+                console.log('编辑', data);
+                editCenterManagement(data);
             }
         });
 
-        //todo: 新增待完成
         // 触发事件
         let active = {
             centerAdd: function () {

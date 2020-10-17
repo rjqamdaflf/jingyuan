@@ -34,4 +34,7 @@ public class LinkManagement {
 
     @TableField("center_id")
     private String centerId;
+
+    @TableField(exist = false)
+    private String centerName;
 }

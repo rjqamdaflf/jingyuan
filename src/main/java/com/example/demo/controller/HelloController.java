@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import com.example.demo.dto.Result;
 import com.example.demo.dto.UserSecurityDto;
 import com.example.demo.service.MenuService;
@@ -7,7 +9,6 @@ import com.example.demo.service.UserService;
 import com.example.demo.utils.ResultUtil;
 import com.example.demo.utils.SecurityUserUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,9 +59,23 @@ public class HelloController {
 
     @GetMapping("/hello")
     @ResponseBody
-    @PreAuthorize("isAuthenticated()")
     public String hello() {
         return "hello";
+    }
+
+    @GetMapping("/data")
+    @ResponseBody
+    public Result data() {
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.putOpt("id", 1);
+        jsonObject.putOpt("birthday", "");
+
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.add(jsonObject);
+        jsonArray.add(jsonObject);
+        jsonArray.add(jsonObject);
+        return ResultUtil.success(jsonArray);
     }
 
 
