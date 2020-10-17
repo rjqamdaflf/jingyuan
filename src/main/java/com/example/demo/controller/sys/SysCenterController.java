@@ -58,6 +58,13 @@ public class SysCenterController {
         return ResultUtil.success(all);
     }
 
+    @GetMapping("/findAll")
+    @ResponseBody
+    public Result getAllCenter() {
+        return ResultUtil.success(centrerManagementDao.selectList(null));
+    }
+
+
     @GetMapping("/management/del/{id}")
     @ResponseBody
     public Result delCenterData(@PathVariable Integer id) {

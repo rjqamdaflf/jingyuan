@@ -23,6 +23,12 @@
         <!--        <a class="layui-btn layui-btn-mini layui-btn-normal" lay-event="edit">编辑</a>-->
         <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del">删除</a>
     </script>
+    <style>
+        /*解决编辑表格右边出现的下拉箭头*/
+        .layui-table-grid-down {
+            display: none;
+        }
+    </style>
 </div>
 <script>
     layui.config({
@@ -34,13 +40,13 @@
         //实例
         let centerTable = table.render({
             elem: '#centerTable'
-            , height: 530
             , url: '/sys/link/center/data' //数据接口
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             , page: true //开启分页
             , limits: [5, 10, 15, 20, 50]
             , field: "中心管理"
             , toolbar: '#toolbar'
+            , height: 'full-2'
             //因为[ [ … ] ]之间的表达式在thymeleaf被认为是内联表达式,所以渲染错误
             , cols: [
                 [ //表头

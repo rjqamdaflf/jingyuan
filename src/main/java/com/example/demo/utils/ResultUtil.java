@@ -32,7 +32,7 @@ public class ResultUtil {
     }
 
     public static Result success(String msg) {
-        return success(msg, null);
+        return success(msg, (Object) null);
     }
 
 

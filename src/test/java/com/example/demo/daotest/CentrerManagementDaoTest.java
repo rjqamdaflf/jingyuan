@@ -22,4 +22,12 @@ public class CentrerManagementDaoTest extends DemoApplicationTests {
         IPage<CenterManagement> all = centrerManagementDao.findAll(page);
         all.getRecords().forEach(System.out::println);
     }
+
+    @Test
+    public void test2() {
+        IPage<CenterManagement> centerManagements = centrerManagementDao.findAll(null);
+
+        centerManagements.getRecords().forEach(e -> log.info(String.valueOf(e)));
+    }
+
 }

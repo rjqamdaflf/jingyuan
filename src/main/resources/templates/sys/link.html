@@ -41,13 +41,18 @@
         <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del">删除</a>
     </script>
 
-    <!--    &lt;!&ndash;    下拉框&ndash;&gt;-->
-    <!--    <script type="text/html" id="selectCenter">-->
-    <!--        <select name='roleId' id='roleId' lay-filter="roleId[Select](http://www.blog2019.net/tag/Select?tagId=271)"-->
-    <!--                data-value={{d.roleId}} lay-verify='' lay-search=''>-->
-    <!--            {{d.roleSelect}}-->
-    <!--        </select>-->
-    <!--    </script>-->
+    <!--    下拉框-->
+    <script type="text/html" id="selectCenter">
+        <select name='roleId' id='roleId' lay-filter="roleId[Select](http://www.blog2019.net/tag/Select?tagId=271)"
+                data-value={{d.roleId}} lay-verify='' lay-search=''>
+            <option value=""></option>
+            <option value="父子">父子</option>
+            <option value="母子">母子</option>
+            <option value="姐弟">姐弟</option>
+            <option value="弟弟">弟弟</option>
+
+        </select>
+    </script>
 
     <script>
         layui.config({
@@ -56,18 +61,24 @@
             tableEdit: 'tableEdit'
         }).use(['table', 'tableEdit', 'layer'], function () {
             let table = layui.table, tableEdit = layui.tableEdit, $ = layui.$;
-            let params = [{name: undefined, value: ""}, {name: 1, value: "张三1"}, {name: 2, value: "张三2"},
-                {name: 3, value: "张三3"}, {name: 4, value: "张三4"}, {name: 5, value: "张三5"}];
+            // var params = [{name:undefined,value:""},{name:1,value:"张三1"},{name:2,value:"张三2"},{name:3,value:"张三3"},{name:4,value:"张三4"},{name:5,value:"张三5"}];
+            let params;
+            $.get(ctx + "/sys/link/center/findAll", function (data) {
+                console.log('获取center data', data);
+                if (data.code === 0) {
+                    params = data;
+                }
+            })
+
             let linkTable = table.render({
                 elem: '#linkTable'
-                , height: 'full-200'
                 , id: 'link_table_id'
                 , url: '/sys/link/link/data' //数据接口
                 , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
                 , page: true //开启分页
                 , limits: [5, 10, 15, 20, 50]
                 , field: "链接管理"
-                , height: 'full-200'
+                , height: 'full-5'
                 , toolbar: '#toolbar'
                 //因为[ [ … ] ]之间的表达式在thymeleaf被认为是内联表达式,所以渲染错误
                 , cols: [
@@ -102,14 +113,15 @@
                         title: '所属中心',
                         align: 'center',
                         sort: true,
-                        event: 'danxuan',
+                        event: 'centerSelect',
                         config: {type: 'select', data: params, verify: true},
                         templet: function (d) {
-                            if (d.danxuan) {
-                                if (d.danxuan.value) {
-                                    return d.danxuan.value;
+                            console.log('abb', d)
+                            if (d.centerSelect) {
+                                if (d.centerSelect.value) {
+                                    return d.centerSelect.value;
                                 }
-                                return d.danxuan;
+                                return d.centerSelect;
                             }
                             return ''
                         }
