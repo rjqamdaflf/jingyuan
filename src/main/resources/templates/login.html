@@ -209,7 +209,7 @@
                     var layer = layui.layer;
                     if (data.code === 0) {
                         layer.msg(data.msg, {icon: 1, time: 1000}, function () {
-                            window.location.href = ctx + "/index";
+                            window.location.href = ctx + "/sys/index";
                         });
                     } else {
                         layer.msg(data.msg, {icon: 2, time: 2000}, function () {

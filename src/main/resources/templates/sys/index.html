@@ -18,7 +18,7 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
 
-    <script th:replace="common/head::index_head"></script>
+    <script th:replace="common/head::head"></script>
 
     <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
     <div class="layui-side layui-bg-black" style="background-color: rgba(54, 123, 183,  0.73)">
@@ -49,17 +49,19 @@
         <div class="layui-tab" lay-filter="demo" lay-allowclose="true">
             <!-- 标题 -->
             <ul class="layui-tab-title">
-                <li class="layui-this" lay-id="index_index">首页</li>
+                <li class="layui-this" lay-id="11">首页</li>
             </ul>
             <!-- 内容 -->
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
                     <div class="layui-row layui-col-space15" style="padding: 20px;background-color: #F2F2F2;">
-                        <div class="layui-col-md6" th:if="${sysNotice}!=null">
+                        <div class="layui-col-md6">
                             <div class="layui-card">
-                                <div class="layui-card-header">系统公告</div>
+                                <div class="layui-card-header">欢迎使用</div>
                                 <div class="layui-card-body">
-                                    <div th:utext="${sysNotice.content}">kfeopwkqofkoewqkfok</div>
+                                    欢迎你，<span th:text="${currentUser.username}"></span>
+                                    <br/>
+                                    <br/>
                                 </div>
                             </div>
                         </div>
@@ -96,7 +98,7 @@
                 element.tabAdd('demo', {
                     title: text,
                     //iframe子页面onload新增监听src为/loginPage是父页面跳转/loginPage，解决“俄罗斯套娃”问题
-                    content: "<iframe  width='100%' height='" + height + "'  frameborder='0' scrolling='auto' src='" + url + "'></iframe>",
+                    content: "<iframe  width='100%' height='"+ height +"'  frameborder='0' scrolling='auto' src='"+ url +"'></iframe>",
                     id: id
                 });
             }

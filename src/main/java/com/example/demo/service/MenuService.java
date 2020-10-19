@@ -14,4 +14,7 @@ public interface MenuService {
      * @return 返回完整系统菜单
      */
     List<SysMenuVo> getSystemMenu();
+
+    List<SysMenuVo> getMenu();
+
 }

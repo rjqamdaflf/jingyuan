@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.Result;
 import com.example.demo.dto.UserSecurityDto;
+import com.example.demo.mapper.mysql.SysNoticeDao;
 import com.example.demo.service.MenuService;
 import com.example.demo.service.UserService;
 import com.example.demo.utils.ResultUtil;
@@ -27,7 +28,8 @@ public class HelloController {
     UserService userService;
     @Resource
     MenuService menuService;
-
+    @Resource
+    SysNoticeDao sysNoticeDao;
 
     @GetMapping("/")
     public String getIndex() {
@@ -35,10 +37,18 @@ public class HelloController {
     }
 
     @GetMapping("/index")
-    public String getIndex2(Model model) {
+    public String getIndex_1(Model model) {
+        model.addAttribute("menuList", menuService.getMenu());
+        //获取公告
+        model.addAttribute("sysNotice", sysNoticeDao.getNewSysNotice());
+        return "index";
+    }
+
+    @GetMapping("/sys/index")
+    public String getSysIndex(Model model) {
         model.addAttribute("currentUser", SecurityUserUtil.getCurrentUser());
         model.addAttribute("menuList", menuService.getSystemMenu());
-        return "index";
+        return "sys/index";
     }
 
 

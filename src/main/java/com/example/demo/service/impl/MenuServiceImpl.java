@@ -1,9 +1,11 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.mapper.mysql.LinkManagementDao;
 import com.example.demo.service.MenuService;
 import com.example.demo.vo.SysMenuVo;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +21,8 @@ import java.util.UUID;
  */
 @Service
 public class MenuServiceImpl implements MenuService {
-
+    @Resource
+    private LinkManagementDao linkManagementDao;
 
     @Override
     public List<SysMenuVo> getSystemMenu() {
@@ -89,5 +92,10 @@ public class MenuServiceImpl implements MenuService {
         resList.add(menuVoList22);
 
         return resList;
+    }
+
+    @Override
+    public List<SysMenuVo> getMenu() {
+        return linkManagementDao.selectIndexMenu();
     }
 }

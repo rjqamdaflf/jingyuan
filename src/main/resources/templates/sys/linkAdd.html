@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>添加中心管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <script th:replace="common/head::static"></script>
+</head>
+<body style="height: 180px;width: 180px">
+<form class="layui-form" lay-filter="centerAdd" style="margin: 50px auto">
+    <div class="layui-form-item layui-row">
+        <label class="layui-form-label" style="width: 100px">系统名称</label>
+        <div class="layui-input-block" style="width: 380px">
+            <input type="text" name="linkName" lay-verify="required" autocomplete="off"
+                   placeholder="请输入中心名称" class="layui-input linkName">
+        </div>
+    </div>
+    <div class="layui-form-item layui-row">
+        <label class="layui-form-label" style="width: 100px">URL</label>
+        <div class="layui-input-block" style="width: 380px">
+            <input type="text" name="url" lay-verify="required" autocomplete="off"
+                   placeholder="请输入URL" class="layui-input url">
+        </div>
+    </div>
+    <div class="layui-form-item layui-row">
+        <label class="layui-form-label" style="width: 100px">所属中心</label>
+        <div class="layui-input-block" style="width: 380px">
+            <select class="centerId" name="centerId" lay-verify="required" lay-search="">
+                <option th:value="${center.name}" th:each="center: ${centerData}" th:text="${center.value}">layer
+                </option>
+            </select>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+
+        //日期
+        // laydate.render({
+        //     elem: '#date'
+        // });
+    });
+
+    document.onkeydown = function (e) {
+        let ev = parent.document.all ? window.event : e;
+        if (ev.keyCode === 13) {
+            return false
+        }
+    }
+
+</script>
+</body>
+</html>

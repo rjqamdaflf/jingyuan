@@ -10,9 +10,11 @@ import com.example.demo.mapper.mysql.LinkManagementDao;
 import com.example.demo.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * @program: demo
@@ -34,6 +36,41 @@ public class SysLinkController {
     @GetMapping
     public String sysLink() {
         return "sys/link";
+    }
+
+    @PostMapping("/management/add")
+    @ResponseBody
+    public Result linkAdd(String linkName, String url, String centerId) {
+        if (linkName == null || "".equals(linkName)) {
+            throw new RuntimeException("系统名称不能为空!");
+        }
+        if (url == null || "".equals(url)) {
+            throw new RuntimeException("URL不能为空!");
+        }
+        if (centerId == null || "".equals(centerId)) {
+            throw new RuntimeException("所属中心不能为空!");
+        }
+        log.info("添加的数据为：linkName {}，url {}，centerId {}", linkName, url, centerId);
+
+        CenterManagement centerManagement = centrerManagementDao.selectById(centerId);
+        log.info("centerManagement,{}", centerManagement);
+        if (centerManagement == null) {
+            throw new RuntimeException("所属中心不存在");
+        }
+
+        LinkManagement linkManagement = new LinkManagement();
+        linkManagement.setCenterId(centerId);
+        linkManagement.setCreateTime(new Date());
+        linkManagement.setSysName(linkName);
+        linkManagement.setSysUrl(url);
+        linkManagementDao.insert(linkManagement);
+        return ResultUtil.success();
+    }
+
+    @GetMapping("/management/toAdd")
+    public String linkToAdd(Model model) {
+        model.addAttribute("centerData", centrerManagementDao.findList());
+        return "sys/linkAdd";
     }
 
 

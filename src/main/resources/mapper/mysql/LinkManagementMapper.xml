@@ -7,7 +7,12 @@
     <select id="findAll" resultType="com.example.demo.entity.LinkManagement">
         SELECT * FROM link_management lm LEFT JOIN center_management cm ON lm.center_id=cm.id
     </select>
-
-
-
+    <select id="selectIndexMenu" resultType="com.example.demo.vo.SysMenuVo">
+        SELECT
+            id menu_id,
+            sys_name menu_name,
+            sys_url menu_path
+        FROM
+            link_management
+	 </select>
 </mapper>

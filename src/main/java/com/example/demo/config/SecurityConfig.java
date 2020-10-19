@@ -69,6 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/index", "/").permitAll()
                 //放行图标
                 .antMatchers("/favicon.ico").permitAll()
+                .antMatchers("/index").permitAll()
                 //放行注册接口
                 .antMatchers(HttpMethod.POST, "/register").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
@@ -89,9 +90,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //关闭跨站请求防护
         http.csrf().disable();
 
-        http
-                //开启记住我
-                .rememberMe()
+
+        //开启记住我
+        http.rememberMe()
                 //七天免登陆
                 .tokenValiditySeconds(604800)
                 .tokenRepository(persistentTokenRepository)

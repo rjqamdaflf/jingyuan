@@ -25,6 +25,7 @@ import java.util.Date;
 @Controller
 @RequestMapping("/sys/link/center")
 public class SysCenterController {
+
     @Resource
     private CentrerManagementDao centrerManagementDao;
 
@@ -34,7 +35,7 @@ public class SysCenterController {
     }
 
     @GetMapping("/management/toAdd")
-    public String managementToAdd() {
+    public String centerToAdd() {
         return "sys/centerAdd";
     }
 
@@ -42,6 +43,9 @@ public class SysCenterController {
     @ResponseBody
     public Result managementAdd(String centerName) {
         log.info("添加中心管理名称，名称为：{}", centerName);
+        if (centerName == null) {
+            throw new RuntimeException("中心管理名称不能为空");
+        }
         CenterManagement save = new CenterManagement();
         save.setCenterName(centerName);
         save.setUpdateTime(new Date());
