@@ -69,7 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/index", "/").permitAll()
                 //放行图标
                 .antMatchers("/favicon.ico").permitAll()
-                .antMatchers("/index").permitAll()
+                .antMatchers("/index","/").permitAll()
                 //放行注册接口
                 .antMatchers(HttpMethod.POST, "/register").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()

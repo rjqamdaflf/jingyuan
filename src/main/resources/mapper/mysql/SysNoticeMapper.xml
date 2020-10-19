@@ -3,8 +3,25 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.mapper.mysql.SysNoticeDao">
+    <update id="updateState">
+        UPDATE sys_notice
+        SET show_flag = #{state}
+        WHERE
+            id =#{id}
+    </update>
 
     <select id="getNewSysNotice" resultType="com.example.demo.entity.SysNotice">
-        SELECT * FROM sys_notice ORDER BY create_time DESC  LIMIT 1
+        SELECT
+            *
+        FROM
+            sys_notice
+        WHERE
+            show_flag = 1
+        ORDER BY
+            update_time  DESC
+            LIMIT 5
+    </select>
+    <select id="findAll" resultType="com.example.demo.entity.SysNotice">
+        SELECT * FROM sys_notice ORDER BY update_time DESC
     </select>
 </mapper>

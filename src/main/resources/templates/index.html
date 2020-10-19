@@ -13,6 +13,10 @@
         dl {
             margin-bottom: 0px !important;
         }
+
+        .layui-carousel {
+            background-color: transparent;
+        }
     </style>
 </head>
 <body class="layui-layout-body">
@@ -55,25 +59,38 @@
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
                     <div class="layui-row layui-col-space15" style="padding: 20px;background-color: #F2F2F2;">
-                        <div class="layui-col-md6" th:if="${sysNotice}!=null">
-                            <div class="layui-card">
-                                <div class="layui-card-header">系统公告</div>
+                        <div class="layui-col-md6">
+                            <div class="layui-card" style="height: 300px">
+                                <div class="layui-card-header">欢迎使用</div>
                                 <div class="layui-card-body">
-                                    <div th:utext="${sysNotice.content}">kfeopwkqofkoewqkfok</div>
+                                    <br/>
+                                    <br/>
+                                    <p>静远实习项目</p>
+                                    <br/>
+                                    <br/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-carousel layui-col-md6" id="notice-carousel">
+                            <div carousel-item="" th:if=" ${#lists.size(sysNotices)}>0">
+                                <div class="layui-col-md6" th:each="sysNotice:${sysNotices}">
+                                    <div class="layui-card" style="height: 300px">
+                                        <div class="layui-card-header" th:text="${sysNotice.title}">系统公告</div>
+                                        <div class="layui-card-body">
+                                            <div th:utext="${sysNotice.content}"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
-
-
     <!-- 底部固定区域 -->
     <script th:replace="common/footer::footer"></script>
-
-
 </div>
 
 <script th:inline="javascript">
@@ -82,8 +99,15 @@
 </script>
 <script>
 
-    layui.use('element', function () {
-        let element = layui.element;
+    layui.use(['carousel', 'element'], function () {
+        let element = layui.element, carousel = layui.carousel;
+        //常规轮播
+        carousel.render({
+            elem: '#notice-carousel'
+            , arrow: 'set'
+            , anim: 'fade'
+        });
+
         console.log("menu.click");
         $("body").on("click", ".huanzi-menu", function (e) {
             let url = $(this).data("url");

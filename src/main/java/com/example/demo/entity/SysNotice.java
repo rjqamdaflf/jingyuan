@@ -22,11 +22,21 @@ public class SysNotice {
     @TableId(value = "id", type = IdType.AUTO)
     private String id;
 
-    @TableField("create_time")
+    @TableField("update_time")
     private Date updateTime;
+
+    @TableField("create_time")
+    private Date createTime;
 
     @TableField("content")
     private String content;
+
+    @TableField("title")
+    private String title;
+
+
+    @TableField("show_flag")
+    private String showFlag;
 
 
 }

@@ -40,7 +40,7 @@ public class HelloController {
     public String getIndex_1(Model model) {
         model.addAttribute("menuList", menuService.getMenu());
         //获取公告
-        model.addAttribute("sysNotice", sysNoticeDao.getNewSysNotice());
+        model.addAttribute("sysNotices", sysNoticeDao.getNewSysNotice());
         return "index";
     }
 

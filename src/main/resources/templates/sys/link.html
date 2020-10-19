@@ -54,12 +54,7 @@
             tableEdit: 'tableEdit'
         }).use(['table', 'tableEdit', 'layer'], function () {
             let table = layui.table, tableEdit = layui.tableEdit, $ = layui.$;
-            let params = [{name: undefined, value: ""}, {name: 1, value: "张三1"},
-                {name: 2, value: "张三2"}, {name: 3, value: "张三3"},
-                {name: 4, value: "张三4"}, {name: 5, value: "张三5"}];
-            // let params = [];
-
-
+            let params = [];
             $.ajax({
                 url: ctx + "/sys/link/center/findAll",
                 type: "get",

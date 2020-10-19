@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>公告管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <script th:replace="common/head::static"></script>
+    <style>
+        .layui-table-cell {
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div class="site-demo-button" id="layerDemo" style="margin-bottom: 0;">
+        <button data-method="noticeAdd" type="button" class="layui-btn layui-btn-lg layui-btn-radius"
+                style="width: 150px">
+            <i class="layui-icon">&#xe608;</i> 添加
+        </button>
+    </div>
+    <table id="noticeTable" lay-filter="noticeTable"></table>
+    <!-- 表格操作按钮集 -->
+    <script type="text/html" id="barOption">
+        <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del">删除</a>
+    </script>
+    <script>
+        layui.use(['table', 'form', 'layer'], function () {
+            let table = layui.table, $ = layui.$, form = layui.form;
+            form.on('switch(enabledState)', function (data) {
+                console.log('jfeijwqijf', data)
+                let checked = data.elem.checked;
+                let data_id = data.elem.attributes['data-id'].nodeValue;
+                console.log(data_id);
+                console.log(checked);
+                updateSystemNoticeState(data_id, checked);
+            });
+
+            let noticeTable = table.render({
+                elem: '#noticeTable'
+                , id: 'notice_table_id'
+                , url: '/sys/system/notice/data' //数据接口
+                , cellMinWidth: 160
+                , page: true //开启分页
+                , limits: [5, 10, 15, 20, 50]
+                , field: "公告管理"
+                , height: 'full-5'
+                , toolbar: '#toolbar'
+                //因为[ [ … ] ]之间的表达式在thymeleaf被认为是内联表达式,所以渲染错误
+                , cols: [
+                    [ //表头
+                        {field: 'id', title: 'id', align: 'center', sort: false, hide: true}
+                        , {
+                        field: 'title',
+                        title: '标题',
+                        align: 'center',
+                        edit: 'text',
+                    }
+                        , {
+                        field: 'content',
+                        title: '公告内容',
+                        align: 'center',
+                        edit: 'text',
+                    }
+                        , {
+                        field: 'updateTime',
+                        title: '更新时间',
+                        align: 'center'
+                    }
+                        , {
+                        field: 'showFlag',
+                        title: '是否启用',
+                        align: 'center',
+                        templet: function (d) { //名字需要和上面定义的名字对应上
+                            let isCkecked = d.showFlag === "1" ? "checked" : "";
+                            return '<input type="checkbox" lay-skin="switch" lay-filter="enabledState" data-id="' + d.id + '" lay-text="启用|禁用" ' + isCkecked + '> ';
+                        }
+                    }
+                        , {fixed: 'right', title: '操作', width: 100, align: 'center', toolbar: '#barOption'}
+                    ]
+                ]
+            });
+
+            function updateSystemNoticeState(id, state) {
+                console.log('updateSystemNoticeState', id, '         ', state);
+                $.post(ctx + "/sys/system/notice/update/state", {id: id, state: state}, function (data) {
+                    console.log('updateSystemNoticeState', data);
+                    if (data.code === 0) {
+                        layer.msg("更新成功！", {icon: 1, time: 2000});
+                        noticeTable.reload();
+                    } else {
+                        layer.msg("更新失败！原因：" + data.msg, {icon: 2, time: 2000});
+                        noticeTable.reload();
+                    }
+                })
+            }
+
+            function editSystemNotice(data) {
+                console.log('editSystemNotice', data);
+                $.post(ctx + "/sys/system/notice/update/", data, function (data) {
+                    console.log('editSystemNotice', data);
+                    if (data.code === 0) {
+                        layer.msg("更新成功！", {icon: 1, time: 2000});
+                        noticeTable.reload();
+                    } else {
+                        layer.msg("更新失败！原因：" + data.msg, {icon: 2, time: 2000});
+                        noticeTable.reload();
+                    }
+                });
+            }
+
+            function delSystemNotice(obj) {
+                console.log('delSystemNotice', obj);
+                $.get(ctx + "/sys/system/notice/del/" + obj.data.id, function (data) {
+                    console.log('delSystemNotice', data);
+                    if (data.code === 0) {
+                        layer.msg("删除成功！", {icon: 1, time: 2000});
+                        noticeTable.reload();
+                    } else {
+                        noticeTable.msg("删除失败！原因：" + data.msg, {icon: 2, time: 2000});
+                    }
+                });
+            }
+
+            //监听单元格编辑
+            table.on('edit(noticeTable)', function (obj) {
+                var value = obj.value //得到修改后的值
+                    , data = obj.data //得到所在行所有键值
+                    , field = obj.field; //得到字段
+                editSystemNotice(data);
+            });
+
+            //监听单元格事件
+            table.on('tool(noticeTable)', function (obj) {
+                if (obj.event === 'del') {
+                    layer.confirm('真的删除行么', function (index) {
+                        console.log('删除', obj);
+                        layer.close(index);
+                        delSystemNotice(obj);
+                    });
+                }
+            });
+            // 触发事件
+            // let active = {
+            //     centerAdd: function () {
+            //         //示范一个公告层
+            //         layer.open({
+            //             type: 2//0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层)
+            //             //数组第二项可以写任意css样式；如果你不想显示标题栏，你可以title: false
+            //             , title: '新增链接管理'
+            //             , closeBtn: false
+            //             , area: ['550px', '360px']
+            //             , shade: 0.6//遮幕
+            //             , id: 'LAY_LinkManagementAdd' //设定一个id，防止重复弹出
+            //             , btn: ['新增', '取消']
+            //             , btnAlign: 'c'//按钮排列：居中对齐
+            //             , moveType: 1 //拖拽模式，0或者1
+            //             , content: '/sys/link/link/management/toAdd'//跳转到想要的界面，这里是我自己项目的跳转界面
+            //             , yes: function (index, layero) {
+            //                 console.log("success,index=", index, '+layero=', layero);
+            //                 let body = layer.getChildFrame("body", index);
+            //                 let linkName = body.find(".linkName").val();
+            //                 let url = body.find(".url").val();
+            //                 let centerId = body.find(".centerId").val();
+            //                 // console.log(linkName)
+            //                 // console.log(url)
+            //                 // console.log(centerId)
+            //                 // console.log("sys/link/link/management/add数据：", linkName, '     ', url, '  ', centerId);
+            //                 if (linkName === '' || url === '' || centerId === '') {
+            //                     console.log("jfoipjeiwojqfw");
+            //                     layer.msg("数据不能为空", {icon: 2, time: 2000});
+            //                     return;
+            //                 }
+            //                 $.post('/sys/link/link/management/add', {
+            //                     linkName: linkName,
+            //                     url: url,
+            //                     centerId: centerId
+            //                 }, function (data) {
+            //                     console.log('/sys/link/link/management/add', data);
+            //                     if (data.code === 0) {
+            //                         //如果设定了yes回调，需进行手工关闭
+            //                         layer.close(index);
+            //                         layer.msg("添加成功", {icon: 1, time: 2000});
+            //                         linkTable.reload();
+            //                     } else {
+            //                         layer.msg("添加失败！原因：" + data.msg, {icon: 2, time: 2000});
+            //                     }
+            //                 })
+            //             }
+            //         })
+            //     }
+            // }
+            $('#layerDemo .layui-btn').on('click', function () {
+                var othis = $(this), method = othis.data('method');
+                active[method] ? active[method].call(this, othis) : '';
+            });
+        });
+    </script>
+</div>
+</body>
+</html>
