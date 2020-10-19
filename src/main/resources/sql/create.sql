@@ -39,3 +39,26 @@ CREATE TABLE `user_authority`  (
   INDEX `FKpqlsjpkybgos9w2svcri7j8xy`(`user_id`) USING BTREE,
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
 
+
+CREATE TABLE `sys_menu` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '菜单id',
+  `menu_name` varchar(255) NOT NULL COMMENT '菜单名称',
+  `menu_path` varchar(255) NOT NULL COMMENT '菜单路径',
+  `menu_parent_id` int(11) DEFAULT NULL COMMENT '上级id',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='系统菜单表'
+
+
+CREATE TABLE `sys_notice` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content` text NOT NULL,
+  `create_time` datetime NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `show_flag` smallint(255) NOT NULL,
+  `update_time` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4
+
+

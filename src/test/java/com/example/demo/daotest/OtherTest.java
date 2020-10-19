@@ -44,7 +44,7 @@ public class OtherTest extends DemoApplicationTests {
     @Test
     public void test() {
         List<User> all = applicationDao.getAll();
-        all.forEach(e -> System.out.println(e));
+        all.forEach(System.out::println);
     }
 
     @Test
