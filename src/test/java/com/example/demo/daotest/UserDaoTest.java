@@ -22,4 +22,6 @@ public class UserDaoTest extends DemoApplicationTests {
         us.setPassword("klfjewkojqfio");
         userDao.addUser(us);
     }
+
+
 }
