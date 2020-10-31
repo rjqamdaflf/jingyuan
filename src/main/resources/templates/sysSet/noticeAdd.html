@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>新增公告</title>
+    <script th:replace="common/head::static"></script>
+</head>
+<body>
+<div class="layui-fluid">
+    <form class="layui-form" lay-filter="centerAdd">
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-md5">
+                <label class="layui-form-label">公告标题</label>
+            </div>
+            <div class="layui-input-block layui-col-md7">
+                <input type="text" name="title" lay-verify="required" autocomplete="off"
+                       placeholder="请输入公告标题" class="layui-input title">
+            </div>
+        </div>
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-md5">
+                <label class="layui-form-label">公告内容</label>
+            </div>
+            <div class="layui-input-block layui-col-md7">
+            <textarea name="content" lay-verify="required" autocomplete="off"
+                      placeholder="请输入公告内容" class="layui-textarea content"></textarea>
+            </div>
+        </div>
+    </form>
+    <script>
+        layui.use(['form', 'layedit', 'laydate'], function () {
+            var form = layui.form
+                , layer = layui.layer
+                , layedit = layui.layedit
+                , laydate = layui.laydate;
+
+            //日期
+            // laydate.render({
+            //     elem: '#date'
+            // });
+        });
+
+        document.onkeydown = function (e) {
+            let ev = parent.document.all ? window.event : e;
+            if (ev.keyCode === 13) {
+                return false
+            }
+        }
+
+    </script>
+</div>
+</body>
+</html>

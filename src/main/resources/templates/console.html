@@ -34,8 +34,7 @@
                 <div class="layui-col-md12" th:each="sysNotice:${sysNotices}">
                     <div class="layui-card" style="height: 300px">
                         <div class="layui-card-header" th:text="${sysNotice.title}">系统公告</div>
-                        <div class="layui-card-body">
-                            <div th:utext="${sysNotice.content}"></div>
+                        <div class="layui-card-body layui-col-md12" th:utext="${sysNotice.content}">
                         </div>
                     </div>
                 </div>

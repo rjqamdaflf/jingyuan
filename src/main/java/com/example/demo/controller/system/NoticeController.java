@@ -34,6 +34,13 @@ public class NoticeController {
         return "sysSet/noticeTable";
     }
 
+
+    @GetMapping("/toAdd")
+    public String appToAdd() {
+        return "sysSet/noticeAdd";
+    }
+
+
     @GetMapping("/data")
     @ResponseBody
     public Result noticeData(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
@@ -56,6 +63,19 @@ public class NoticeController {
         notice.setShowFlag(sysNotice.getShowFlag());
         notice.setUpdateTime(new Date());
         sysNoticeDao.updateById(notice);
+        return ResultUtil.success();
+    }
+
+
+    @PostMapping("/add")
+    @ResponseBody
+    public Result addItem(SysNotice sysNotice) {
+        log.info("添加信息：{}", sysNotice);
+        sysNotice.setCreateTime(new Date());
+        sysNotice.setUpdateTime(new Date());
+        //默认开启状态
+        sysNotice.setShowFlag("1");
+        sysNoticeDao.insert(sysNotice);
         return ResultUtil.success();
     }
 
