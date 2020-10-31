@@ -5,13 +5,16 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.dto.Result;
 import com.example.demo.entity.AppManagement;
 import com.example.demo.mapper.mysql.AppManagementDao;
+import com.example.demo.mapper.mysql.CenterManagementDao;
 import com.example.demo.service.CenterManagementService;
 import com.example.demo.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * @program: demo
@@ -29,12 +32,22 @@ public class SysAppController {
     private AppManagementDao appManagementDao;
 
     @Resource
-    CenterManagementService centerManagementService;
+    private CenterManagementDao centerManagementDao;
+
+    @Resource
+    private CenterManagementService centerManagementService;
 
 
     @GetMapping
     public String sysApp() {
         return "sys/app";
+    }
+
+
+    @GetMapping("/toAdd")
+    public String appToAdd(Model model) {
+        model.addAttribute("centerData", centerManagementDao.findList());
+        return "sys/appAdd";
     }
 
 
@@ -52,12 +65,21 @@ public class SysAppController {
     @PostMapping("/edit")
     @ResponseBody
     public Result appEdit(AppManagement appManagement) {
-        log.info("客户端修改，修改信息为：{}", appManagement);
+        log.info("客户端修改，修改为：{}", appManagement);
         if (appManagement.getId() == null) {
             throw new RuntimeException("id不能为空");
         }
         centerManagementService.checkCenterIdExist(appManagement.getCenterId());
         appManagementDao.updateById(appManagement);
+        return ResultUtil.success();
+    }
+
+    @PostMapping("/add")
+    @ResponseBody
+    public Result addAppItem(AppManagement appManagement) {
+        log.info("客户端增加，增加为：{}", appManagement);
+        appManagement.setCreateTime(new Date());
+        appManagementDao.insert(appManagement);
         return ResultUtil.success();
     }
 

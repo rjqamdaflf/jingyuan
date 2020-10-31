@@ -35,8 +35,8 @@ public class AppManagement {
     @TableField("center_id")
     private String centerId;
 
-    @TableField("down_passwork")
-    private String downPasswork;
+    @TableField("down_password")
+    private String downPassword;
 
     @TableField(exist = false)
     private String centerName;

@@ -10,17 +10,9 @@
             display: none;
         }
 
-        /* !* 防止下拉框的下拉列表被隐藏---必须设置--- *!
-         .layui-table-cell {
-             overflow: visible !important;
-         }
-
-         !* 使得下拉框与单元格刚好合适 *!
-         td .layui-form-select {
-             margin-top: -10px;
-             margin-left: -15px;
-             margin-right: -15px;
-         }*/
+        .layui-table-cell {
+            height: auto;
+        }
     </style>
 </head>
 <body>
@@ -71,7 +63,7 @@
                 , page: true //开启分页
                 , limits: [5, 10, 15, 20, 50]
                 , field: "链接管理"
-                , height: 'full-5'
+                , height: 'full-3'
                 , toolbar: '#toolbar'
                 //因为[ [ … ] ]之间的表达式在thymeleaf被认为是内联表达式,所以渲染错误
                 , cols: [
@@ -208,18 +200,13 @@
                             let linkName = body.find(".linkName").val();
                             let url = body.find(".url").val();
                             let centerId = body.find(".centerId").val();
-                            // console.log(linkName)
-                            // console.log(url)
-                            // console.log(centerId)
-                            // console.log("sys/link/link/management/add数据：", linkName, '     ', url, '  ', centerId);
                             if (linkName === '' || url === '' || centerId === '') {
-                                console.log("jfoipjeiwojqfw");
                                 layer.msg("数据不能为空", {icon: 2, time: 2000});
                                 return;
                             }
                             $.post('/sys/link/link/management/add', {
-                                linkName: linkName,
-                                url: url,
+                                sysName: linkName,
+                                sysUrl: url,
                                 centerId: centerId
                             }, function (data) {
                                 console.log('/sys/link/link/management/add', data);

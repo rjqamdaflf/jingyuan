@@ -23,7 +23,7 @@ public class CenterManagementServiceImpl implements CenterManagementService {
     CenterManagementDao centerManagementDao;
 
     @Override
-    public void checkCenterIdExist(String id) {
+    public CenterManagement checkCenterIdExist(String id) {
         if (id == null) {
             throw new RuntimeException("所属中心ID不能为空");
         }
@@ -32,5 +32,6 @@ public class CenterManagementServiceImpl implements CenterManagementService {
         if (centerManagement == null) {
             throw new RuntimeException("所属中心不存在");
         }
+        return centerManagement;
     }
 }

@@ -3,7 +3,6 @@ package com.example.demo.controller.sys;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.dto.Result;
-import com.example.demo.entity.CenterManagement;
 import com.example.demo.entity.LinkManagement;
 import com.example.demo.mapper.mysql.CenterManagementDao;
 import com.example.demo.mapper.mysql.LinkManagementDao;
@@ -31,8 +30,13 @@ import java.util.Date;
 public class SysLinkController {
     @Resource
     LinkManagementDao linkManagementDao;
+
     @Resource
     CenterManagementDao centerManagementDao;
+
+    @Resource
+    CenterManagementService centerManagementService;
+
 
     @GetMapping
     public String sysLink() {
@@ -41,29 +45,19 @@ public class SysLinkController {
 
     @PostMapping("/management/add")
     @ResponseBody
-    public Result linkAdd(String linkName, String url, String centerId) {
-        if (linkName == null || "".equals(linkName)) {
+    public Result linkAdd(LinkManagement linkManagement) {
+        if (linkManagement.getSysName() == null || "".equals(linkManagement.getSysName())) {
             throw new RuntimeException("系统名称不能为空!");
         }
-        if (url == null || "".equals(url)) {
+        if (linkManagement.getSysUrl() == null || "".equals(linkManagement.getSysUrl())) {
             throw new RuntimeException("URL不能为空!");
         }
-        if (centerId == null || "".equals(centerId)) {
+        if (linkManagement.getCenterId() == null || "".equals(linkManagement.getCenterId())) {
             throw new RuntimeException("所属中心不能为空!");
         }
-        log.info("添加的数据为：linkName {}，url {}，centerId {}", linkName, url, centerId);
-
-        CenterManagement centerManagement = centerManagementDao.selectById(centerId);
-        log.info("centerManagement,{}", centerManagement);
-        if (centerManagement == null) {
-            throw new RuntimeException("所属中心不存在");
-        }
-
-        LinkManagement linkManagement = new LinkManagement();
-        linkManagement.setCenterId(centerId);
+        log.info("添加的数据为：{}", linkManagement);
+        centerManagementService.checkCenterIdExist(linkManagement.getCenterId());
         linkManagement.setCreateTime(new Date());
-        linkManagement.setSysName(linkName);
-        linkManagement.setSysUrl(url);
         linkManagementDao.insert(linkManagement);
         return ResultUtil.success();
     }
@@ -92,9 +86,6 @@ public class SysLinkController {
         return ResultUtil.success();
     }
 
-
-    @Resource
-    CenterManagementService centerManagementService;
 
     @PostMapping("/management/edit/")
     @ResponseBody

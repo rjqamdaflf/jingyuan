@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>链接管理添加</title>
+    <title>app管理添加</title>
     <script th:replace="common/head::static"></script>
 </head>
 <body>
@@ -13,17 +13,8 @@
                 <label class="layui-form-label">系统名称</label>
             </div>
             <div class="layui-input-block layui-col-md7">
-                <input type="text" name="linkName" lay-verify="required" autocomplete="off"
-                       placeholder="请输入中心名称" class="layui-input linkName">
-            </div>
-        </div>
-        <div class="layui-form-item layui-row">
-            <div class="layui-col-md5">
-                <label class="layui-form-label">下载地址</label>
-            </div>
-            <div class="layui-input-block layui-col-md7">
-                <input type="text" name="url" lay-verify="required" autocomplete="off"
-                       placeholder="请输入URL" class="layui-input url">
+                <input type="text" name="sysName" lay-verify="required" autocomplete="off"
+                       placeholder="请输入系统名称" class="layui-input sysName">
             </div>
         </div>
         <div class="layui-form-item layui-row">
@@ -35,6 +26,25 @@
                     <option th:value="${center.name}" th:each="center: ${centerData}" th:text="${center.value}">layer
                     </option>
                 </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-md5">
+                <label class="layui-form-label">下载地址</label>
+            </div>
+            <div class="layui-input-block layui-col-md7">
+                <input type="text" name="down-url" lay-verify="required" autocomplete="off"
+                       placeholder="请输入下载地址" class="layui-input down-url">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-md5">
+                <label class="layui-form-label">下载密码</label>
+            </div>
+            <div class="layui-input-block layui-col-md7">
+                <input type="text" name="down-password" lay-verify="required" autocomplete="off"
+                       placeholder="请输入下载密码" class="layui-input down-password">
             </div>
         </div>
     </form>

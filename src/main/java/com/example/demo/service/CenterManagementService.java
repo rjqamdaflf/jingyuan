@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.CenterManagement;
+
 /**
  * @author 84271
  */
@@ -11,5 +13,5 @@ public interface CenterManagementService {
      * @param id
      * @return
      */
-    void checkCenterIdExist(String id);
+    CenterManagement checkCenterIdExist(String id);
 }
