@@ -40,6 +40,11 @@ public class SysMenuVo implements Serializable {
 
 
     /**
+     * 英文名字
+     */
+    private String menuEnglish;
+
+    /**
      * 修改时间
      */
     private Date updateTime;

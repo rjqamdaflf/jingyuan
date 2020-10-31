@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">>
+<head th:fragment="static">
+</head>
+<body>
+
+
+<!-- 页面标签 -->
+<div th:fragment="index_pagetabs">
+    <div class="layadmin-pagetabs" id="LAY_app_tabs">
+        <div class="layui-icon layadmin-tabs-control layui-icon-prev" layadmin-event="leftPage"></div>
+        <div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage"></div>
+        <div class="layui-icon layadmin-tabs-control layui-icon-down">
+            <ul class="layui-nav layadmin-tabs-select" lay-filter="layadmin-pagetabs-nav">
+                <li class="layui-nav-item" lay-unselect>
+                    <a href="javascript:;"></a>
+                    <dl class="layui-nav-child layui-anim-fadein">
+                        <dd layadmin-event="closeThisTabs"><a href="javascript:;">关闭当前标签页</a></dd>
+                        <dd layadmin-event="closeOtherTabs"><a href="javascript:;">关闭其它标签页</a></dd>
+                        <dd layadmin-event="closeAllTabs"><a href="javascript:;">关闭全部标签页</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+        <div class="layui-tab" lay-unauto lay-allowClose="true" lay-filter="layadmin-layout-tabs">
+            <ul class="layui-tab-title" id="LAY_app_tabsheader">
+                <li lay-id="home/console.html" lay-attr="home/console.html" class="layui-this"><i
+                        class="layui-icon layui-icon-home"></i></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="sys_nav">
+    <script th:inline="javascript">
+        let menu = [[${menuList}]];
+        console.log('fjewoipqjf', menu);
+    </script>
+    <!-- 管理页面侧边菜单 -->
+    <div class="layui-side layui-side-menu">
+        <div class="layui-side-scroll">
+            <div class="layui-logo" lay-href="/console">
+                <span>静远实习项目</span>
+            </div>
+            <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"
+                lay-filter="layadmin-system-side-menu">
+                <div th:each="menu,iterStat : ${menuList}">
+                    <li th:data-name="${menu.menuEnglish}"
+                        th:class="${iterStat==0}?'layui-nav-item layui-nav-itemed':'layui-nav-item'">
+                        <a href="javascript:;"
+                           th:lay-tips="${menu.menuName}" th:data-id="${menu.menuId}" lay-direction="2">
+                            <i class="layui-icon"></i>
+                            <cite th:text="${menu.menuName}"></cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd th:each="menuChildren,index :${menu.children}"
+                                th:data-name="${menuChildren.menuEnglish}"
+                                th:class="${index==0}?'layui-this':''">
+                                <a th:lay-href="${#request.getContextPath() +menuChildren.menuPath}"
+                                   th:text="${menuChildren.menuName}">控制台</a>
+                            </dd>
+                        </dl>
+                    </li>
+                </div>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+
+<div th:fragment="index_nav">
+    <script th:inline="javascript">
+        let menu = [[${menuList}]];
+        console.log('fjewoipqjf', menu);
+    </script>
+    <!-- 用户页面侧边菜单 -->
+    <div class="layui-side layui-side-menu">
+        <div class="layui-side-scroll">
+            <div class="layui-logo" lay-href="/console">
+                <span>静远实习项目</span>
+            </div>
+            <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"
+                lay-filter="layadmin-system-side-menu">
+                <div th:each="menu,iterStat : ${menuList}">
+                    <li data-name="home" class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;" th:lay-href="${#request.getContextPath() + menu.menuPath}"
+                           th:lay-tips="${menu.menuName}" th:data-id="${menu.menuId}" lay-direction="2">
+                            <i class="layui-icon"></i>
+                            <cite th:text="${menu.menuName}"></cite>
+                        </a>
+                    </li>
+                </div>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

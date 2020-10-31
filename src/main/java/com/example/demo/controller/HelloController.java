@@ -36,11 +36,19 @@ public class HelloController {
         return "redirect:/index";
     }
 
+    @GetMapping("/console")
+    public String getConsole(Model model) {
+        //获取公告
+        model.addAttribute("sysNotices", sysNoticeDao.getNewSysNotice());
+        return "console";
+    }
+
+
     @GetMapping("/index")
     public String getIndex_1(Model model) {
         model.addAttribute("menuList", menuService.getMenu());
-        //获取公告
-        model.addAttribute("sysNotices", sysNoticeDao.getNewSysNotice());
+//        获取公告
+//        model.addAttribute("sysNotices", sysNoticeDao.getNewSysNotice());
         return "index";
     }
 
