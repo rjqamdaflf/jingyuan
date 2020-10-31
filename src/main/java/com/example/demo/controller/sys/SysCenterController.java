@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.dto.Result;
 import com.example.demo.entity.CenterManagement;
-import com.example.demo.mapper.mysql.CentrerManagementDao;
+import com.example.demo.mapper.mysql.CenterManagementDao;
 import com.example.demo.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -27,7 +27,7 @@ import java.util.Date;
 public class SysCenterController {
 
     @Resource
-    private CentrerManagementDao centrerManagementDao;
+    private CenterManagementDao centerManagementDao;
 
     @GetMapping
     public String sysCenter() {
@@ -49,7 +49,7 @@ public class SysCenterController {
         CenterManagement save = new CenterManagement();
         save.setCenterName(centerName);
         save.setUpdateTime(new Date());
-        centrerManagementDao.insert(save);
+        centerManagementDao.insert(save);
         return ResultUtil.success();
     }
 
@@ -58,21 +58,21 @@ public class SysCenterController {
     public Result sysCenterData(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
                                 @RequestParam(value = "limit", required = false, defaultValue = "15") Integer limit) {
         Page<CenterManagement> pageAll = new Page<>(page, limit);
-        IPage<CenterManagement> all = centrerManagementDao.findAll(pageAll);
+        IPage<CenterManagement> all = centerManagementDao.findAll(pageAll);
         return ResultUtil.success(all);
     }
 
     @GetMapping("/findAll")
     @ResponseBody
     public Result getAllCenter() {
-        return ResultUtil.success(centrerManagementDao.findList());
+        return ResultUtil.success(centerManagementDao.findList());
     }
 
 
     @GetMapping("/management/del/{id}")
     @ResponseBody
     public Result delCenterData(@PathVariable Integer id) {
-        centrerManagementDao.deleteById(id);
+        centerManagementDao.deleteById(id);
         return ResultUtil.success();
     }
 
@@ -80,7 +80,7 @@ public class SysCenterController {
     @ResponseBody
     public Result editCenterData(CenterManagement centerManagement) {
         log.info("CenterData编辑，数据为：{}", centerManagement);
-        centrerManagementDao.updateById(centerManagement);
+        centerManagementDao.updateById(centerManagement);
         return ResultUtil.success();
     }
 

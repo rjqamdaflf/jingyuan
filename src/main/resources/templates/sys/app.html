@@ -2,18 +2,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>中心管理</title>
+    <title>客户端管理</title>
     <script th:replace="common/head::static"></script>
 </head>
 <body>
 <div class="layui-fluid">
-    <div class="site-demo-button" id="layerDemo" style="margin-bottom: 0;">
-        <button data-method="centerAdd" type="button" class="layui-btn layui-btn-lg layui-btn-radius"
+    <div class="layui-row" id="layerDemo">
+        <button data-method="appAdd" type="button" class="layui-btn layui-btn-lg layui-btn-radius"
                 style="width: 150px">
             <i class="layui-icon">&#xe608;</i> 添加
         </button>
     </div>
-    <table id="centerTable" lay-filter="test"></table>
+    <table id="appTable" lay-filter="test"></table>
     <!-- 表格操作按钮集 -->
     <script type="text/html" id="barOption">
         <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del">删除</a>
@@ -32,14 +32,27 @@
         tableEdit: 'tableEdit'
     }).use(['table', 'tableEdit', 'layer'], function (message) {
         let $ = layui.jquery, layer = layui.layer, table = layui.table, tableEdit = layui.tableEdit;
+
+        let params = [];
+        $.ajax({
+            url: ctx + "/sys/link/center/findAll",
+            type: "get",
+            async: false,
+            success: function (data) {
+                console.log('获取center data', data);
+                if (data.code === 0) {
+                    params = data.data;
+                }
+            }
+        })
         //实例
-        let centerTable = table.render({
-            elem: '#centerTable'
-            , url: '/sys/link/center/data' //数据接口
+        let appTable = table.render({
+            elem: '#appTable'
+            , url: '/sys/link/app/data' //数据接口
             , cellMinWidth: 160 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             , page: true //开启分页
             , limits: [5, 10, 15, 20, 50]
-            , field: "中心管理"
+            , field: "客户端管理"
             , toolbar: '#toolbar'
             , height: 'full-2'
             //因为[ [ … ] ]之间的表达式在thymeleaf被认为是内联表达式,所以渲染错误
@@ -47,18 +60,42 @@
                 [ //表头
                     {field: 'id', title: 'id', align: 'center', hide: true},
                     {
-                        field: 'updateTime',
+                        field: 'createTime',
                         title: '创建时间',
                         align: 'center',
-                        sort: true
                     }
                     , {
-                    field: 'centerName',
-                    title: '中心名称',
+                    field: 'sysName',
+                    title: '系统名称',
                     align: 'center',
                     sort: true,
-                    event: 'updateCenter',
+                    event: 'updateApp',
                     config: {type: 'input'}
+                }, {
+                    field: 'centerName',
+                    title: '所属中心',
+                    align: 'center',
+                    sort: true,
+                    event: 'updateCenterName',
+                    templet: function (d) {
+                        console.log('abb', d);
+                        if (d.centerName) {
+                            return d.centerName;
+                        }
+                        return '';
+                    }, config: {type: 'select', data: params, verify: true}
+                }, {
+                    field: 'downUrl',
+                    title: '下载地址',
+                    config: {type: 'input'},
+                    event: 'updateApp',
+                    align: 'center',
+                }, {
+                    field: 'downPasswork',
+                    title: '下载密码',
+                    config: {type: 'input'},
+                    event: 'updateApp',
+                    align: 'center',
                 }
                     , {fixed: 'right', title: '操作', width: 100, align: 'center', toolbar: '#barOption'}
                 ]
@@ -66,29 +103,29 @@
         });
 
 
-        let aopTable = tableEdit.aopObj(centerTable.config.cols); //获取一个aop对象
+        let aopTable = tableEdit.aopObj(appTable.config.cols); //获取一个aop对象
 
-        function editCenterManagement(data) {
-            console.log('editCenterManagement', data);
-            $.post(ctx + "/sys/link/center/management/edit/", data, function (data) {
-                console.log('delCenterManagement回调函数', data);
+        function editAppManagement(data) {
+            console.log('editAppManagement', data);
+            $.post(ctx + "/sys/link/app/edit/", data, function (data) {
+                console.log('editAppManagement回调函数', data);
                 if (data.code === 0) {
                     layer.msg("更新成功！", {icon: 1, time: 2000});
-                    centerTable.reload();
+                    appTable.reload();
                 } else {
                     layer.msg("更新失败！原因：" + data.msg, {icon: 2, time: 2000});
-                    centerTable.reload();
+                    appTable.reload();
                 }
             });
         }
 
-        function delCenterManagement(obj) {
-            console.log('delCenterManagement', obj);
-            $.get(ctx + "/sys/link/center/management/del/" + obj.data.id, function (data) {
-                console.log('delCenterManagement回调函数', data);
+        function delAppManagement(obj) {
+            console.log('delAppManagement', obj);
+            $.get(ctx + "/sys/link/app/del/" + obj.data.id, function (data) {
+                console.log('delAppManagement回调函数', data);
                 if (data.code === 0) {
                     layer.msg("删除成功！", {icon: 1, time: 2000});
-                    centerTable.reload();
+                    appTable.reload();
                 } else {
                     layer.msg("删除失败！原因：" + data.msg, {icon: 2, time: 2000});
                 }
@@ -104,9 +141,9 @@
                     console.log('删除', data);
                     // obj.del();
                     layer.close(index);
-                    delCenterManagement(obj);
+                    delAppManagement(obj);
                 });
-            } else if (obj.event === 'updateCenter') {
+            } else if (obj.event === 'updateApp') {
                 console.log('编辑obj', obj)
                 let value = obj.value //得到修改后的值
                     , data = obj.data //得到所在行所有键值
@@ -116,7 +153,18 @@
                 obj.update(update);
                 data[field] = value;
                 console.log('编辑', data);
-                editCenterManagement(data);
+                editAppManagement(data);
+            } else if (obj.event === 'updateCenterName') {
+                console.log('编辑obj', obj)
+                let value = obj.value //得到修改后的值
+                    , data = obj.data //得到所在行所有键值
+                    , field = obj.field; //得到字段
+                let update = {};
+                update[field] = value.value;
+                obj.update(update);
+                data['centerId'] = value.name;
+                console.log('编辑', data, '字段', field, '修改后的值：', value);
+                editAppManagement(data);
             }
         });
 

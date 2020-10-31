@@ -5,8 +5,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.dto.Result;
 import com.example.demo.entity.CenterManagement;
 import com.example.demo.entity.LinkManagement;
-import com.example.demo.mapper.mysql.CentrerManagementDao;
+import com.example.demo.mapper.mysql.CenterManagementDao;
 import com.example.demo.mapper.mysql.LinkManagementDao;
+import com.example.demo.service.CenterManagementService;
 import com.example.demo.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -31,7 +32,7 @@ public class SysLinkController {
     @Resource
     LinkManagementDao linkManagementDao;
     @Resource
-    CentrerManagementDao centrerManagementDao;
+    CenterManagementDao centerManagementDao;
 
     @GetMapping
     public String sysLink() {
@@ -52,7 +53,7 @@ public class SysLinkController {
         }
         log.info("添加的数据为：linkName {}，url {}，centerId {}", linkName, url, centerId);
 
-        CenterManagement centerManagement = centrerManagementDao.selectById(centerId);
+        CenterManagement centerManagement = centerManagementDao.selectById(centerId);
         log.info("centerManagement,{}", centerManagement);
         if (centerManagement == null) {
             throw new RuntimeException("所属中心不存在");
@@ -69,7 +70,7 @@ public class SysLinkController {
 
     @GetMapping("/management/toAdd")
     public String linkToAdd(Model model) {
-        model.addAttribute("centerData", centrerManagementDao.findList());
+        model.addAttribute("centerData", centerManagementDao.findList());
         return "sys/linkAdd";
     }
 
@@ -92,16 +93,17 @@ public class SysLinkController {
     }
 
 
+    @Resource
+    CenterManagementService centerManagementService;
+
     @PostMapping("/management/edit/")
     @ResponseBody
     public Result editLinkData(LinkManagement linkManagement) {
         log.info("editLinkData，数据为：{}", linkManagement);
-        String centerId = linkManagement.getCenterId();
-        CenterManagement centerManagement = centrerManagementDao.selectById(centerId);
-        log.info("centerManagement,{}", centerManagement);
-        if (centerManagement == null) {
-            throw new RuntimeException("所属中心不存在");
+        if (linkManagement.getId() == null) {
+            throw new RuntimeException("id不能为空");
         }
+        centerManagementService.checkCenterIdExist(linkManagement.getCenterId());
         linkManagementDao.updateById(linkManagement);
         return ResultUtil.success();
     }
