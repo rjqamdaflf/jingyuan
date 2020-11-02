@@ -8,7 +8,7 @@
 
 <div class="layui-fluid">
     <script th:inline="javascript">
-        let node = [[${sysNotices}]];
+        var node = [[${sysNotices}]];
         console.log('node', node);
     </script>
     <div class="layui-row layui-col-space15">
@@ -52,7 +52,7 @@
     }).use(['index', 'console']);
 
     layui.use(['carousel', 'element'], function () {
-        let element = layui.element, carousel = layui.carousel;
+        var element = layui.element, carousel = layui.carousel;
         //常规轮播
         carousel.render({
             elem: '#notice-carousel'

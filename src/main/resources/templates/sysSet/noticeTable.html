@@ -25,17 +25,17 @@
     </script>
     <script>
         layui.use(['table', 'form', 'layer'], function () {
-            let table = layui.table, $ = layui.$, form = layui.form;
+            var table = layui.table, $ = layui.$, form = layui.form;
             form.on('switch(enabledState)', function (data) {
                 console.log('jfeijwqijf', data)
-                let checked = data.elem.checked;
-                let data_id = data.elem.attributes['data-id'].nodeValue;
+                var checked = data.elem.checked;
+                var data_id = data.elem.attributes['data-id'].nodeValue;
                 console.log(data_id);
                 console.log(checked);
                 updateSystemNoticeState(data_id, checked);
             });
 
-            let noticeTable = table.render({
+            var noticeTable = table.render({
                 elem: '#noticeTable'
                 , id: 'notice_table_id'
                 , url: '/sys/system/notice/data' //数据接口
@@ -70,7 +70,7 @@
                         title: '是否启用',
                         align: 'center',
                         templet: function (d) { //名字需要和上面定义的名字对应上
-                            let isCkecked = d.showFlag === "1" ? "checked" : "";
+                            var isCkecked = d.showFlag === "1" ? "checked" : "";
                             return '<input type="checkbox" lay-skin="switch" lay-filter="enabledState" data-id="' + d.id + '" lay-text="启用|禁用" ' + isCkecked + '> ';
                         }
                     }
@@ -139,7 +139,7 @@
                 }
             });
             // 触发事件
-            let active = {
+            var active = {
                 noticeAdd: function () {
                     //示范一个公告层
                     layer.open({
@@ -156,9 +156,9 @@
                         , content: '/sys/system/notice/toAdd'//跳转到想要的界面，这里是我自己项目的跳转界面
                         , yes: function (index, layero) {
                             console.log("success,index=", index, '+layero=', layero);
-                            let body = layer.getChildFrame("body", index);
-                            let title = body.find(".title").val();
-                            let content = body.find(".content").val();
+                            var body = layer.getChildFrame("body", index);
+                            var title = body.find(".title").val();
+                            var content = body.find(".content").val();
                             if (title === '' || content === '') {
                                 layer.msg("数据不能为空", {icon: 2, time: 2000});
                                 return;

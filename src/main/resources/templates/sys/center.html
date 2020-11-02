@@ -36,9 +36,9 @@
     }).extend({
         tableEdit: 'tableEdit'
     }).use(['table', 'tableEdit', 'layer'], function (message) {
-        let $ = layui.jquery, layer = layui.layer, table = layui.table, tableEdit = layui.tableEdit;
+        var $ = layui.jquery, layer = layui.layer, table = layui.table, tableEdit = layui.tableEdit;
         //实例
-        let centerTable = table.render({
+        var centerTable = table.render({
             elem: '#centerTable'
             , url: '/sys/link/center/data' //数据接口
             , cellMinWidth: 160 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
@@ -70,7 +70,7 @@
         });
 
 
-        let aopTable = tableEdit.aopObj(centerTable.config.cols); //获取一个aop对象
+        var aopTable = tableEdit.aopObj(centerTable.config.cols); //获取一个aop对象
 
         function editCenterManagement(data) {
             console.log('editCenterManagement', data);
@@ -102,7 +102,7 @@
 
         //监听工具条
         aopTable.on('tool(test)', function (obj) {
-            let data = obj.data;
+            var data = obj.data;
             if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {
                     console.log('删除', data);
@@ -112,10 +112,10 @@
                 });
             } else if (obj.event === 'updateCenter') {
                 console.log('编辑obj', obj)
-                let value = obj.value //得到修改后的值
+                var value = obj.value //得到修改后的值
                     , data = obj.data //得到所在行所有键值
                     , field = obj.field; //得到字段
-                let update = {};
+                var update = {};
                 update[field] = value;
                 obj.update(update);
                 data[field] = value;
@@ -125,7 +125,7 @@
         });
 
         // 触发事件
-        let active = {
+        var active = {
             centerAdd: function () {
                 //示范一个公告层
                 layer.open({
@@ -142,8 +142,8 @@
                     , content: '/sys/link/center/management/toAdd'//跳转到想要的界面，这里是我自己项目的跳转界面
                     , yes: function (index, layero) {
                         console.log("success,index=", index, '+layero=', layero);
-                        let body = layer.getChildFrame("body", index);
-                        let data = body.find(".layui-input").val();
+                        var body = layer.getChildFrame("body", index);
+                        var data = body.find(".layui-input").val();
                         $.post('/sys/link/center/management/add', {'centerName': data}, function (data) {
                             console.log('sys/link/center/management/add', data);
                             if (data.code === 0) {

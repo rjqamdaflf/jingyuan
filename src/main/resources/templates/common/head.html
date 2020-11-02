@@ -37,7 +37,7 @@
 
 <div th:fragment="head">
     <script th:inline="javascript">
-        let currentUser = [[${currentUser}]]
+        var currentUser = [[${currentUser}]]
         console.log('user', currentUser);
     </script>
     <!--    <div class="layui-header" style="background-color: rgba(54, 123, 183,  0.73)">-->

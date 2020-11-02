@@ -83,7 +83,6 @@ public class SysAppController {
         return ResultUtil.success();
     }
 
-
     @GetMapping("/del/{id}")
     @ResponseBody
     public Result delLinkData(@PathVariable Integer id) {

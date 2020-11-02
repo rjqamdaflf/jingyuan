@@ -41,8 +41,8 @@
         }).extend({
             tableEdit: 'tableEdit'
         }).use(['table', 'tableEdit', 'layer'], function () {
-            let table = layui.table, tableEdit = layui.tableEdit, $ = layui.$;
-            let params = [];
+            var table = layui.table, tableEdit = layui.tableEdit, $ = layui.$;
+            var params = [];
             $.ajax({
                 url: ctx + "/sys/link/center/findAll",
                 type: "get",
@@ -55,7 +55,7 @@
                 }
             })
 
-            let linkTable = table.render({
+            var linkTable = table.render({
                 elem: '#linkTable'
                 , id: 'link_table_id'
                 , url: '/sys/link/link/data' //数据接口
@@ -114,7 +114,7 @@
              * aop代理是基于event点击事件进行操作的，
              * 因此cols中务必开启event点击事件！
              **/
-            let aopTable = tableEdit.aopObj(linkTable.config.cols); //获取一个aop对象
+            var aopTable = tableEdit.aopObj(linkTable.config.cols); //获取一个aop对象
 
 
             function editLinkManagement(data) {
@@ -146,7 +146,7 @@
 
             //监听单元格事件
             aopTable.on('tool(linkTable)', function (obj) {
-                let data = obj.data;
+                var data = obj.data;
                 if (obj.event === 'del') {
                     layer.confirm('真的删除行么', function (index) {
                         console.log('删除', data);
@@ -155,10 +155,10 @@
                     });
                 } else if (obj.event === 'updateLink') {
                     console.log('编辑obj', obj)
-                    let value = obj.value //得到修改后的值
+                    var value = obj.value //得到修改后的值
                         , data = obj.data //得到所在行所有键值
                         , field = obj.field; //得到字段
-                    let update = {};
+                    var update = {};
                     update[field] = value;
                     obj.update(update);
                     data[field] = value;
@@ -166,10 +166,10 @@
                     editLinkManagement(data);
                 } else if (obj.event === 'updateCenterName') {
                     console.log('编辑obj', obj)
-                    let value = obj.value //得到修改后的值
+                    var value = obj.value //得到修改后的值
                         , data = obj.data //得到所在行所有键值
                         , field = obj.field; //得到字段
-                    let update = {};
+                    var update = {};
                     update[field] = value.value;
                     obj.update(update);
                     data['centerId'] = value.name;
@@ -178,7 +178,7 @@
                 }
             });
             // 触发事件
-            let active = {
+            var active = {
                 centerAdd: function () {
                     //示范一个公告层
                     layer.open({
@@ -195,10 +195,10 @@
                         , content: '/sys/link/link/management/toAdd'//跳转到想要的界面，这里是我自己项目的跳转界面
                         , yes: function (index, layero) {
                             console.log("success,index=", index, '+layero=', layero);
-                            let body = layer.getChildFrame("body", index);
-                            let linkName = body.find(".linkName").val();
-                            let url = body.find(".url").val();
-                            let centerId = body.find(".centerId").val();
+                            var body = layer.getChildFrame("body", index);
+                            var linkName = body.find(".linkName").val();
+                            var url = body.find(".url").val();
+                            var centerId = body.find(".centerId").val();
                             if (linkName === '' || url === '' || centerId === '') {
                                 layer.msg("数据不能为空", {icon: 2, time: 2000});
                                 return;

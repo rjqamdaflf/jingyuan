@@ -62,7 +62,7 @@
         });
 
         document.onkeydown = function (e) {
-            let ev = parent.document.all ? window.event : e;
+            var ev = parent.document.all ? window.event : e;
             if (ev.keyCode === 13) {
                 return false
             }
