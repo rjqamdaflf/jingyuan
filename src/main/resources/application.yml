@@ -1,6 +1,8 @@
 spring:
   application:
     name: demo
+    #    图片基础路径
+    imagePrefix: "image:"
   #mvc接收参数时对日期进行格式化
   jackson:
     date-format: yyyy-MM-dd

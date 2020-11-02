@@ -8,6 +8,7 @@
 <body>
 <div class="layui-fluid">
     <form class="layui-form" lay-filter="centerAdd">
+        <input type="hidden" name="id" lay-verify="required" autocomplete="off" class="layui-input id">
         <div class="layui-form-item layui-row">
             <div class="layui-col-md5">
                 <label class="layui-form-label">公告标题</label>
@@ -22,7 +23,7 @@
                 <label class="layui-form-label">公告内容</label>
             </div>
             <div class="layui-input-block layui-col-md7">
-            <textarea name="content" lay-verify="required" autocomplete="off"
+            <textarea id="content" style="display: none;" name="content" lay-verify="required" autocomplete="off"
                       placeholder="请输入公告内容" class="layui-textarea content"></textarea>
             </div>
         </div>
@@ -34,10 +35,14 @@
                 , layedit = layui.layedit
                 , laydate = layui.laydate;
 
-            //日期
-            // laydate.render({
-            //     elem: '#date'
-            // });
+            layedit.set({
+                uploadImage: {
+                    url: '/text/uploadImage' //接口url
+                    , type: 'POST' //默认post
+                }
+            });
+            //注意：layedit.set 一定要放在 build 前面，否则配置全局接口将无效。
+            layedit.build('content'); //建立编辑器
         });
 
         document.onkeydown = function (e) {

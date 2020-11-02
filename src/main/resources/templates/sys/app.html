@@ -21,6 +21,7 @@
     <table id="appTable" lay-filter="test"></table>
     <!-- 表格操作按钮集 -->
     <script type="text/html" id="barOption">
+        <a class="layui-btn layui-btn-mini " lay-event="click">访问</a>
         <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del">删除</a>
     </script>
     <style>
@@ -101,7 +102,7 @@
                     event: 'updateApp',
                     align: 'center',
                 }
-                    , {fixed: 'right', title: '操作', width: 100, align: 'center', toolbar: '#barOption'}
+                    , {fixed: 'right', title: '操作', align: 'center', toolbar: '#barOption'}
                 ]
             ]
         });
@@ -147,6 +148,9 @@
                     layer.close(index);
                     delAppManagement(obj);
                 });
+            } else if (obj.event === 'click') {
+                console.log('点击了访问按钮！', data);
+                window.open(data.downUrl, "_blank"); //注意第二个参数
             } else if (obj.event === 'updateApp') {
                 console.log('编辑obj', obj)
                 var value = obj.value //得到修改后的值

@@ -21,7 +21,8 @@
     <table id="noticeTable" lay-filter="noticeTable"></table>
     <!-- 表格操作按钮集 -->
     <script type="text/html" id="barOption">
-        <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del">删除</a>
+        <button class="layui-btn layui-btn-mini" type="button" lay-event="noticeEdit">编辑</button>
+        <button class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del">删除</button>
     </script>
     <script>
         layui.use(['table', 'form', 'layer'], function () {
@@ -52,13 +53,11 @@
                         field: 'title',
                         title: '标题',
                         align: 'center',
-                        edit: 'text',
                     }
                         , {
                         field: 'content',
                         title: '公告内容',
                         align: 'center',
-                        edit: 'text',
                     }
                         , {
                         field: 'updateTime',
@@ -74,7 +73,7 @@
                             return '<input type="checkbox" lay-skin="switch" lay-filter="enabledState" data-id="' + d.id + '" lay-text="启用|禁用" ' + isCkecked + '> ';
                         }
                     }
-                        , {fixed: 'right', title: '操作', width: 100, align: 'center', toolbar: '#barOption'}
+                        , {fixed: 'right', title: '操作', align: 'center', toolbar: '#barOption'}
                     ]
                 ]
             });
@@ -93,19 +92,6 @@
                 })
             }
 
-            function editSystemNotice(data) {
-                console.log('editSystemNotice', data);
-                $.post(ctx + "/sys/system/notice/update/", data, function (data) {
-                    console.log('editSystemNotice', data);
-                    if (data.code === 0) {
-                        layer.msg("更新成功！", {icon: 1, time: 2000});
-                        noticeTable.reload();
-                    } else {
-                        layer.msg("更新失败！原因：" + data.msg, {icon: 2, time: 2000});
-                        noticeTable.reload();
-                    }
-                });
-            }
 
             function delSystemNotice(obj) {
                 console.log('delSystemNotice', obj);
@@ -120,13 +106,6 @@
                 });
             }
 
-            //监听单元格编辑
-            table.on('edit(noticeTable)', function (obj) {
-                var value = obj.value //得到修改后的值
-                    , data = obj.data //得到所在行所有键值
-                    , field = obj.field; //得到字段
-                editSystemNotice(data);
-            });
 
             //监听单元格事件
             table.on('tool(noticeTable)', function (obj) {
@@ -136,8 +115,60 @@
                         layer.close(index);
                         delSystemNotice(obj);
                     });
+                } else if (obj.event === 'noticeEdit') {
+                    noticeEdit(obj);
                 }
             });
+
+            function noticeEdit(data) {
+                //示范一个公告层
+                layer.open({
+                    type: 2//0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层)
+                    //数组第二项可以写任意css样式；如果你不想显示标题栏，你可以title: false
+                    , title: '修改公告'
+                    , closeBtn: false
+                    , area: ['550px', '360px']
+                    , shade: 0.6//遮幕
+                    , id: 'LAY_NoticeManagementEdit' //设定一个id，防止重复弹出
+                    , btn: ['修改', '取消']
+                    , btnAlign: 'c'//按钮排列：居中对齐
+                    , moveType: 1 //拖拽模式，0或者1
+                    , content: '/sys/system/notice/toAdd'//跳转到想要的界面，这里是我自己项目的跳转界面
+                    , success: function (layero, index) {
+                        var body = layui.layer.getChildFrame('body', index);
+                        if (data.data) {
+                            // 取到弹出层里的元素，并把编辑的内容放进去
+                            body.find(".id").val(data.data.id);
+                            body.find(".title").val(data.data.title);
+                            body.find(".content").val(data.data.content);
+                            // 记得重新渲染表单
+                            form.render();
+                        }
+                    }, yes: function (index, layero) {
+                        console.log("success,index=", index, '+layero=', layero);
+                        var body = layer.getChildFrame("body", index);
+                        var data = {};
+                        data.title = body.find(".title").val();
+                        data.content = body.find(".content").val();
+                        data.id = body.find(".id").val();
+                        if (data.id === '' || data.title === '' || data.content === '') {
+                            layer.msg("数据不能为空", {icon: 2, time: 2000});
+                            return;
+                        }
+                        $.post('/sys/system/notice/update', data, function (data) {
+                            if (data.code === 0) {
+                                //如果设定了yes回调，需进行手工关闭
+                                layer.close(index);
+                                layer.msg("修改成功", {icon: 1, time: 2000});
+                                noticeTable.reload();
+                            } else {
+                                layer.msg("修改失败！原因：" + data.msg, {icon: 2, time: 2000});
+                            }
+                        })
+                    }
+                })
+            }
+
             // 触发事件
             var active = {
                 noticeAdd: function () {
@@ -147,7 +178,7 @@
                         //数组第二项可以写任意css样式；如果你不想显示标题栏，你可以title: false
                         , title: '新增公告'
                         , closeBtn: false
-                        , area: ['550px', '360px']
+                        , area: ['850px', '650px']
                         , shade: 0.6//遮幕
                         , id: 'LAY_NoticeManagementAdd' //设定一个id，防止重复弹出
                         , btn: ['新增', '取消']
