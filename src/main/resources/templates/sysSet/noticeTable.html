@@ -25,8 +25,10 @@
         <button class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del">删除</button>
     </script>
     <script>
-        layui.use(['table', 'form', 'layer'], function () {
-            var table = layui.table, $ = layui.$, form = layui.form;
+        layui.use(['element', 'table', 'form', 'layer'], function () {
+            var table = layui.table, $ = layui.$, form = layui.form
+                , element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+
             form.on('switch(enabledState)', function (data) {
                 console.log('jfeijwqijf', data)
                 var checked = data.elem.checked;
@@ -169,6 +171,7 @@
                 })
             }
 
+
             // 触发事件
             var active = {
                 noticeAdd: function () {
@@ -178,7 +181,7 @@
                         //数组第二项可以写任意css样式；如果你不想显示标题栏，你可以title: false
                         , title: '新增公告'
                         , closeBtn: false
-                        , area: ['850px', '650px']
+                        , area: ['1000px', '650px']
                         , shade: 0.6//遮幕
                         , id: 'LAY_NoticeManagementAdd' //设定一个id，防止重复弹出
                         , btn: ['新增', '取消']

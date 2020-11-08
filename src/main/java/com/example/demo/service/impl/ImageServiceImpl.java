@@ -1,11 +1,10 @@
 package com.example.demo.service.impl;
 
-import cn.hutool.core.codec.Base64;
-import cn.hutool.json.JSONObject;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.demo.entity.Image;
+import com.example.demo.mapper.mysql.ImageMapper;
 import com.example.demo.service.ImageService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,27 +23,50 @@ import java.util.UUID;
  */
 @Slf4j
 @Service
-public class ImageServiceImpl implements ImageService {
+public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements ImageService {
 
-    @Value("${spring.application.imagePrefix}")
-    private String imagePrefix;
+
+//    @Resource
+//    RedisTemplate<String, JSONObject> redisTemplate;
+
+
+//    @Override
+//    public String upload(MultipartFile file) throws IOException {
+//        Assert.notNull(file, "文件不存在");
+//        byte[] bytes = file.getBytes();
+//        //编码
+//        String encode = Base64.encode(bytes);
+//        String uuid = UUID.randomUUID().toString();
+//        JSONObject json = new JSONObject();
+//        String originalFilename = file.getOriginalFilename();
+//        json.putOpt("fileName", uuid + originalFilename);
+//        json.putOpt("data", encode);
+//        redisTemplate.opsForValue().set(imagePrefix + uuid, json);
+//        return uuid;
+//    }
+
 
     @Resource
-    RedisTemplate<String, JSONObject> redisTemplate;
-
+    ImageMapper imageMapper;
 
     @Override
     public String upload(MultipartFile file) throws IOException {
-        Assert.notNull(file, "文件不存在");
-        byte[] bytes = file.getBytes();
+        Assert.notNull(file, "图片不存在");
         //编码
-        String encode = Base64.encode(bytes);
-        String uuid = UUID.randomUUID().toString();
-        JSONObject json = new JSONObject();
+        Image image = new Image();
+        image.setData(file.getBytes());
         String originalFilename = file.getOriginalFilename();
-        json.putOpt("fileName", uuid + originalFilename);
-        json.putOpt("data", encode);
-        redisTemplate.opsForValue().set(imagePrefix + uuid, json);
-        return uuid;
+        Assert.notNull(originalFilename, "文件名不正确！");
+        String newName = UUID.randomUUID().toString() + originalFilename.substring(originalFilename.lastIndexOf("."));
+        image.setFileName(newName);
+        imageMapper.insert(image);
+        return image.getId();
+    }
+
+    @Override
+    public Image getImage(String id) {
+        Image image = imageMapper.selectById(id);
+        Assert.notNull(image, "图片不存在！");
+        return image;
     }
 }

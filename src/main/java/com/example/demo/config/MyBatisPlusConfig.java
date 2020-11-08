@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @program: demo
- * @ClassName: jfjewqf
+ * @ClassName: MyBatisPlusConfig
  * @Description:
  * @Author: 842712494@qq.com
  * @Date: 2020/10/15 21:11
