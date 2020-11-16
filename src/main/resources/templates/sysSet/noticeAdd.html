@@ -6,45 +6,88 @@
     <script th:replace="common/head::static"></script>
 </head>
 <body>
-<div class="layui-fluid">
-    <form class="layui-form" lay-filter="centerAdd">
-        <input type="hidden" name="id" lay-verify="required" autocomplete="off" class="layui-input id">
+<div class="layui-fluid" style="background-color: red">
+    <form id="noticeForm" class="layui-form" lay-filter="noticeAdd">
         <div class="layui-form-item layui-row">
-            <div class="layui-col-md5">
+            <div class="layui-col-lg3">
                 <label class="layui-form-label">公告标题</label>
             </div>
-            <div class="layui-input-block layui-col-md7">
+            <div class="layui-input-block layui-col-lg9">
                 <input type="text" name="title" lay-verify="required" autocomplete="off"
                        placeholder="请输入公告标题" class="layui-input title">
             </div>
         </div>
         <div class="layui-form-item layui-row">
-            <div class="layui-col-md5">
+            <div class="layui-col-lg3">
                 <label class="layui-form-label">公告内容</label>
             </div>
-            <div class="layui-input-block layui-col-md7">
-            <textarea id="content" style="display: none;" name="content" lay-verify="required" autocomplete="off"
-                      placeholder="请输入公告内容" class="layui-textarea content"></textarea>
+            <div class="layui-input-block layui-col-lg9">
+                <div id="editor" class="content"></div>
             </div>
         </div>
+        <div class="layui-row">
+            <button class="layui-btn layui-btn-lg" style="margin: 0 auto;width: 100%" type="button"
+                    lay-submit lay-filter="noticeAdd">添加
+            </button>
+        </div>
     </form>
-    <script>
-        layui.use(['form', 'layedit', 'laydate'], function () {
-            var form = layui.form
-                , layer = layui.layer
-                , layedit = layui.layedit
-                , laydate = layui.laydate;
+    <script type="text/javascript" th:src="@{/common/iceEditor-1.1.8/src/iceEditor.js}"></script>
 
-            layedit.set({
-                uploadImage: {
-                    url: '/text/uploadImage' //接口url
-                    , type: 'POST' //默认post
-                }
+    <script type="text/javascript">
+        var e = new ice.editor("editor");
+        e.uploadUrl = "/file/uploadImage";
+        // e.screenshot = true;
+        // e.screenshotUpload = false;
+        e.menu = [
+            'backColor',                 //字体背景颜色
+            'fontSize',                  //字体大小
+            'foreColor',                 //字体颜色
+            'bold',                      //粗体
+            'italic',                    //斜体
+            'underline',                 //下划线
+            'strikeThrough',             //删除线
+            'justifyLeft',               //左对齐
+            'justifyCenter',             //居中对齐
+            'justifyRight',              //右对齐
+            'indent',                    //增加缩进
+            'outdent',                   //减少缩进
+            'insertOrderedList',         //有序列表
+            'insertUnorderedList',       //无序列表
+            'superscript',               //上标
+            'subscript',                 //下标
+            'createLink',                //创建连接
+            'unlink',                    //取消连接
+            'hr',                        //水平线
+            'insertImage',               //图片
+            'line'                       //菜单分割线
+        ];
+
+
+        //第三步：创建
+        e.create();
+
+
+        layui.use(['element', 'table', 'form', 'layer'], function () {
+            var table = layui.table, $ = layui.$, form = layui.form
+                , element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+            //监听提交
+            form.on('submit(noticeAdd)', function (data) {
+                data.field['content'] = e.getHTML();
+                console.log('jfoiejwq', data.field);
+
+                $.post('/sys/system/notice/add', data.field, function (data) {
+                    if (data.code === 0) {
+                        //如果设定了yes回调，需进行手工关闭
+                        layer.msg("添加成功", {icon: 1, time: 2000});
+                        $("#noticeForm")[0].reset();
+                        e.setValue(null);
+                    } else {
+                        layer.msg("添加失败！原因：" + data.msg, {icon: 2, time: 2000});
+                    }
+                })
+                return false;
             });
-            //注意：layedit.set 一定要放在 build 前面，否则配置全局接口将无效。
-            layedit.build('content'); //建立编辑器
         });
-
         document.onkeydown = function (e) {
             var ev = parent.document.all ? window.event : e;
             if (ev.keyCode === 13) {

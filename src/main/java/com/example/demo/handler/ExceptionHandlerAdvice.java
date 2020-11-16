@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 统一异常处理
+ *
+ * @author 84271
  */
 @ControllerAdvice
 public class ExceptionHandlerAdvice {
@@ -15,8 +17,7 @@ public class ExceptionHandlerAdvice {
     /**
      * 处理Rest接口请求时的异常
      *
-     * @param ex
-     * @return
+     * @param ex 异常信息
      */
     @ExceptionHandler(Throwable.class)
     @ResponseBody

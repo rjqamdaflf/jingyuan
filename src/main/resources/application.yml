@@ -1,3 +1,11 @@
+app:
+  host: "localhost"
+  #  host-prefix: "http://${app.host}:${server.port}/file/getImage/"
+  host-prefix: "/file/getImage/"
+  #  windows环境时配置此项作为图片存放路径
+  windows-file-location: "C:\\Users\\84271\\Desktop\\实习\\images\\"
+  #  linux下配置此项作为图片存放路径
+  linux-file-location: "./images/"
 spring:
   application:
     name: demo

@@ -1,9 +1,7 @@
 package com.example.demo.daotest;
 
 import com.example.demo.DemoApplicationTests;
-import com.example.demo.dto.User;
 import com.example.demo.dto.UserSecurityDto;
-import com.example.demo.mapper.ApplicationDao;
 import com.example.demo.mapper.mysql.UserDao;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -38,14 +36,6 @@ public class OtherTest extends DemoApplicationTests {
     }
 
 
-    @Resource
-    ApplicationDao applicationDao;
-
-    @Test
-    public void test() {
-        List<User> all = applicationDao.getAll();
-        all.forEach(System.out::println);
-    }
 
     @Test
     public void contextLoads() {
